@@ -26,9 +26,9 @@ app.use(
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-passportConfig();
+app.use(passport.initialize()); // 나중에 const passport = require('./lib/passport)(app)으로 대체
+app.use(passport.session()); // 이하동문
+passportConfig();// 아마도 필요 없을 듯?
 
 app.use('/post', PostRouter);
 
