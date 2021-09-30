@@ -2,8 +2,6 @@ const express = require('express');
 const dotenv = require('dotenv');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const passport = require('passport');
-const passportConfig = require('./passport');
 const cors = require('cors');
 
 const PostRouter = require('./router/post');
@@ -26,9 +24,7 @@ app.use(
   })
 );
 
-app.use(passport.initialize()); // 나중에 const passport = require('./lib/passport)(app)으로 대체
-app.use(passport.session()); // 이하동문
-passportConfig();// 아마도 필요 없을 듯?
+const passport = require('./lib/passport')(app);
 
 app.use('/post', PostRouter);
 
