@@ -9,26 +9,33 @@ router.post('/login',(req,res,next)=>{
             return next(err);
         }
         if(!user){
-            return res.redirect('/auth/login');
+            return res.status(400).send({code : 400, data : info})
         }
         req.logIn(user,(err)=>{
             if(err){
                 return next(err);
             }
-            return req.session.save(()=>{
-                res.redirect('/');
+            return req.session.save((err)=>{
+                if(err){
+                    return next(err);
+                }
+                res.status(200).send({code : 200, data : user});
             })
         })
-    })
+    })(req,res,next);
 });
 
 router.get('/login',(req,res)=>{
-    // 어떻게 짜지?
+    if(req.isAuthenticated && req.user){
+        res.status(200).send({code : 200, data : req.user});
+    } else{
+        res.status(400).send({code : 400, data : null});
+    }
 });
 
 router.get('/logout',(req,res)=>{
     req.logout();
     req.session.save(()=>{
-        res.redirect('/');
+        res.status(200).send({code : 200, data : null});
     });
 });
