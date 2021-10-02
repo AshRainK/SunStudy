@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       <Hello>Home</Hello>
-      <Hello2>Hello</Hello2>
+      {/* <Hello2>Hello</Hello2> */}
     </>
   );
 };
