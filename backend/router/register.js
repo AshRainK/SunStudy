@@ -4,6 +4,39 @@ const db = require('../lib/database');
 const router = express.Router();
 const saltRounds = 10;
 
+router.post('/check_id',(req,res,next)=>{
+    const id = req.body.id;
+    db.query(`SELECT id FROM user WHERE user_id = ?`,
+    [id],
+    (err,results)=>{
+        if(err){
+            next(err);
+        }
+        if(results[0]){
+            res.json({already_exist : true});
+        }else{
+            res.json({already_exist : false});
+        }
+    });
+})
+
+router.post('/check_nickname',(req,res,next)=>{
+    const nickname = req.body.nickname;
+    db.query(`SELECT id FROM user WHERE nickname = ?`,
+    [nickname],
+    (err,results)=>{
+        if(err){
+            next(err);
+        }
+        if(results[0]){
+            res.json({already_exist : true});
+        }else{
+            res.json({already_exist : false});
+        }
+    });
+})
+
+
 router.post('/',(req,res)=>{
     const {id, password, nickname} = req.body // id,password,nickname으로 받아온다고 가정.
     bcrypt.hash(password, saltRounds, function(err, hash) {
