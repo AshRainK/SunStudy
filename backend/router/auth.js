@@ -39,3 +39,5 @@ router.get('/logout',(req,res)=>{
         res.status(200).send({code : 200, data : null});
     });
 });
+
+module.exports = router;
