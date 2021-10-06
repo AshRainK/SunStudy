@@ -6,7 +6,7 @@ const saltRounds = 10;
 
 router.post('/check_id',(req,res,next)=>{
     const id = req.body.id;
-    db.query(`SELECT id FROM user WHERE user_id = ?`,
+    db.query(`SELECT id FROM user WHERE user_id = ?;`,
     [id],
     (err,results)=>{
         if(err){
@@ -22,7 +22,7 @@ router.post('/check_id',(req,res,next)=>{
 
 router.post('/check_nickname',(req,res,next)=>{
     const nickname = req.body.nickname;
-    db.query(`SELECT id FROM user WHERE nickname = ?`,
+    db.query(`SELECT id FROM user WHERE nickname = ?;`,
     [nickname],
     (err,results)=>{
         if(err){
@@ -43,7 +43,7 @@ router.post('/',(req,res)=>{
         if(err){
             res.status(409).send({code:409, data : err})
         }
-        db.query("INSERT INTO user(user_id,password,nickname) VALUES (?,?,?)",
+        db.query("INSERT INTO user(user_id,password,nickname) VALUES (?,?,?);",
         [id,hash,nickname],
         (err2,results)=>{
             if(err2){
@@ -53,3 +53,5 @@ router.post('/',(req,res)=>{
         });
     });
 })
+
+module.exports = router;
