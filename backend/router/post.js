@@ -82,3 +82,5 @@ router.delete('/:post_num',(req,res,next)=>{
         }
     });
 });
+
+module.exports = router;
