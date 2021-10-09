@@ -33,13 +33,8 @@ router.patch('/update',(req,res,next)=>{
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
-<<<<<<< HEAD
     db.query(`SELECT * from post WHERE post_num = ?;`,
     [post_num],
-=======
-    db.query(`SELECT * FROM post WHERE post_num = ?;`,
-    [body.post_num],
->>>>>>> 40584ebc1b609af077d6dfdfd858274e4b966021
     (err,results)=>{
         if(results[0].id !== req.user.id){
             return res.status(400).send({code : 400, 
