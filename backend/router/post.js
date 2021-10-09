@@ -16,7 +16,7 @@ router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 
         if(err){
             next(err);
         }
-        db.query(`SELECT * FROM post WHERE title = ? and post_body = ?;`,
+        db.query(`SELECT post_num,title,post_body,created_date,updated_date,id as writer_id FROM post WHERE title = ? and post_body = ?;`,
         [title, post_body],
         (err,results)=>{
             if(err){
@@ -46,7 +46,7 @@ router.patch('/update',(req,res,next)=>{
                 if(err){
                     next(err);
                 }
-                db.query(`SELECT * FROM post WHERE post_num = ?;`,
+                db.query(`SELECT post_num,title,post_body,created_date,updated_date,id as writer_id FROM post WHERE post_num = ?;`,
                 [post_num],
                 (err, result)=>{
                     if(err){
@@ -85,11 +85,14 @@ router.delete('/:post_num',(req,res,next)=>{
 
 //READ
 router.get('/:post_num',(req,res,next)=>{
-    db.query(`SELECT * FROM post WHERE post_num = ?;`,
+    db.query(`SELECT post_num,title,post_body,created_date,updated_date,id as writer_id FROM post WHERE post_num = ?;`,
     [req.params.post_num],
     (err,result)=>{
         if(err){
             next(err);
+        }
+        if(result.length==0){
+            res.status(404).send({code:404, data : "게시글을 찾을 수 없습니다."});
         }
         db.query(`SELECT user.id,user_id,nickname FROM user JOIN post WHERE post_num = ?;`,
         [req.params.post_num],
