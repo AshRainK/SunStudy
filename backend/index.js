@@ -1,10 +1,17 @@
 const express = require('express');
 const dotenv = require('dotenv');
+dotenv.config();
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
+const cors = require('cors'); 
+const passport = require('passport');
+const passportlib = require('./lib/passport');
+passportlib();
+const app = express();
 
 const PostRouter = require('./router/post');
+const authRouter = require('./router/auth');
+const regiRouter = require('./router/register');
 
 app.set('port', process.env.PORT || 8000);
 app.use(express.json());
@@ -23,10 +30,12 @@ app.use(
     },
   })
 );
-
-const passport = require('./lib/passport')(app);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/post', PostRouter);
+app.use('/auth',authRouter);
+app.use('/register',regiRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
