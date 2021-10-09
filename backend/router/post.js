@@ -8,16 +8,16 @@ router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
-    const body = req.body;
+    const {title,post_body} = req.body;
     db.query(`INSERT INTO post(title,post_body,created_date,id) 
     VALUES(?,?,NOW(),?);`,
-    [body.title, body.post_body,req.user.id],
+    [title, post_body,req.user.id],
     (err)=>{
         if(err){
             next(err);
         }
         db.query(`SELECT * FROM post WHERE title = ? and post_body = ?;`,
-        [body.title, body.post_body],
+        [title, post_body],
         (err,results)=>{
             if(err){
                 next(err);
@@ -29,25 +29,25 @@ router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 
 
 //UPDATE
 router.patch('/update',(req,res,next)=>{
-    const body = req.body;
+    const {post_num,post_body,title} = req.body;
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
-    db.query(`SELECT * FROM post WHERE post_num = ?;`,
-    [body.post_num],
+    db.query(`SELECT * from post WHERE post_num = ?;`,
+    [post_num],
     (err,results)=>{
         if(results[0].id !== req.user.id){
             return res.status(400).send({code : 400, 
                 data : '다른 사람이 작성한 글이므로 수정 할 수 없습니다.'});
         }else{
-            db.query(`UPDATE post SET title=?, post_body=?, updated_date=NOW();`,
-            [body.title,body.post_body],
+            db.query(`UPDATE post SET title=?, post_body=?, updated_date=NOW() WHERE post_num = ?;`,
+            [title,post_body,post_num],
             (err)=>{
                 if(err){
                     next(err);
                 }
                 db.query(`SELECT * FROM post WHERE post_num = ?;`,
-                [body.post_num],
+                [post_num],
                 (err, result)=>{
                     if(err){
                         next(err);
