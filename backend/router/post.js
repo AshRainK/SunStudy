@@ -3,7 +3,7 @@ const router = express.Router();
 const util = require('../lib/auth_util');
 const db = require('../lib/database');
 
-//Create & READ
+//Create
 router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 통해 결과물 전송
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
@@ -33,8 +33,13 @@ router.patch('/update',(req,res,next)=>{
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
+<<<<<<< HEAD
     db.query(`SELECT * from post WHERE post_num = ?;`,
     [post_num],
+=======
+    db.query(`SELECT * FROM post WHERE post_num = ?;`,
+    [body.post_num],
+>>>>>>> 40584ebc1b609af077d6dfdfd858274e4b966021
     (err,results)=>{
         if(results[0].id !== req.user.id){
             return res.status(400).send({code : 400, 
@@ -64,7 +69,7 @@ router.delete('/:post_num',(req,res,next)=>{
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
-    db.query(`SELECT * from post WHERE post_num = ?;`,
+    db.query(`SELECT * FROM post WHERE post_num = ?;`,
     [req.params.post_num],
     (err,results)=>{
         if(results[0].id !== req.user.id){
@@ -82,3 +87,24 @@ router.delete('/:post_num',(req,res,next)=>{
         }
     });
 });
+
+//READ
+router.get('/:post_num',(req,res,next)=>{
+    db.query(`SELECT * FROM post WHERE post_num = ?;`,
+    [req.params.post_num],
+    (err,result)=>{
+        if(err){
+            next(err);
+        }
+        db.query(`SELECT user.id,user_id,nickname FROM user JOIN post WHERE post_num = ?;`,
+        [req.params.post_num],
+        (err,user_result)=>{
+            if(err){
+                next(err);
+            }
+            res.status(200).send({code : 200, data : {post : result[0], user : user_result[0]}});
+        });
+    });
+});
+
+module.exports = router;
