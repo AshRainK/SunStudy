@@ -3,7 +3,7 @@ import React from 'react';
 import Header from './Components/Header';
 import Login from './Screen/Login';
 import Join from './Screen/Join';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 
 const Body = styled.div`
   min-width: 1200px;
@@ -25,21 +25,22 @@ const Main = styled.div`
   width: 100%;
   height: 100%;
 `;
-
 function App() {
   return (
     <div className="App">
-      <Body>
-        <HashRouter>
+      <HashRouter>
+        <Body>
           <Header />
           <Main>
-            <Routes>
-              <Route exact path="/login" element={<Login />}></Route>
-              <Route exact path="/join" element={<Join />}></Route>
-            </Routes>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/join">
+              <Join />
+            </Route>
           </Main>
-        </HashRouter>
-      </Body>
+        </Body>
+      </HashRouter>
     </div>
   );
 }

@@ -91,7 +91,7 @@ function Join() {
     const password = document.querySelector('#password');
     const nickname = document.querySelector('#nickname');
 
-    await axios.post('localhost:8000/post/create', { title: 'Hello', post_body: 'world' }).then((response) => console.log(response));
+    await axios.post('http://localhost:8000/post/create', { title: 'Hello', post_body: 'world' }).then((response) => console.log(response));
   };
 
   return (
