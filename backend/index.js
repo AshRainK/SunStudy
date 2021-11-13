@@ -4,7 +4,6 @@ const cors = require('cors');
 dotenv.config();
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const cors = require('cors'); 
 const passport = require('passport');
 const passportconfig = require('./lib/passport/passport');
 passportconfig();
@@ -18,7 +17,6 @@ app.use(cors());
 app.set('port', process.env.PORT || 8000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use(
