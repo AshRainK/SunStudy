@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import axios from 'axios';
 
 const CreateAccountBackground = styled.div`
   min-width: 800px;
@@ -85,6 +86,14 @@ const Container = styled.div`
 `;
 
 function Join() {
+  const onContentSaveBtnClicked = async () => {
+    const id = document.querySelector('#id');
+    const password = document.querySelector('#password');
+    const nickname = document.querySelector('#nickname');
+
+    await axios.post('localhost:8000/post/create', { title: 'Hello', post_body: 'world' }).then((response) => console.log(response));
+  };
+
   return (
     <CreateAccountBackground>
       <CreateAccountform>
@@ -121,7 +130,7 @@ function Join() {
 
         <Container>
           <ContentSave>
-            <ContentSaveBtn type="submit" value="회원가입"></ContentSaveBtn>
+            <ContentSaveBtn onClick={onContentSaveBtnClicked} type="submit" value="회원가입"></ContentSaveBtn>
           </ContentSave>
         </Container>
       </CreateAccountform>
