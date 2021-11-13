@@ -6,8 +6,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const cors = require('cors'); 
 const passport = require('passport');
-const passportlib = require('./lib/passport/passport');
-passportlib();
+const passportconfig = require('./lib/passport/passport');
+passportconfig();
 const app = express();
 
 const PostRouter = require('./router/post');
