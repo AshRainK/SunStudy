@@ -11,6 +11,7 @@ const Hello2 = styled.button`
 `;
 
 const Home = () => {
+  const onSubmit = () => {};
   return (
     <>
       <Hello>Home</Hello>
