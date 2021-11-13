@@ -2,8 +2,11 @@ import styled from 'styled-components';
 import React from 'react';
 import Header from './Components/Header';
 import Login from './Screen/Login';
+import Join from './Screen/Join';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 
 const Body = styled.div`
+  min-width: 1200px;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -28,10 +31,15 @@ function App() {
   return (
     <div className="App">
       <Body>
-        <Header />
-        <Main>
-          <Login />
-        </Main>
+        <HashRouter>
+          <Header />
+          <Main>
+            <Routes>
+              <Route exact path="/login" element={<Login />}></Route>
+              <Route exact path="/join" element={<Join />}></Route>
+            </Routes>
+          </Main>
+        </HashRouter>
       </Body>
     </div>
   );
