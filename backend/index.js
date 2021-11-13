@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 dotenv.config();
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -13,6 +14,7 @@ const PostRouter = require('./router/post');
 const authRouter = require('./router/auth');
 const regiRouter = require('./router/register');
 
+app.use(cors());
 app.set('port', process.env.PORT || 8000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

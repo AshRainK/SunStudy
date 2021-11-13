@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('../lib/database');
 const router = express.Router();
+const session = require('express-session');
 const saltRounds = 10;
 
 router.post('/check_id',(req,res,next)=>{
@@ -45,13 +46,32 @@ router.post('/',(req,res)=>{
         }
         db.query("INSERT INTO user(user_id,password,nickname) VALUES (?,?,?);",
         [id,hash,nickname],
-        (err2,results)=>{
+        (err2)=>{
             if(err2){
                 res.status(400).send({code:400, data : err2});
             }
-            res.status(200).send({code : 200, data : results[0]});
         });
     });
+    
+    db.query(`SELECT * FROM user WHERE user_id = ?`,
+    [id],
+    (err,result)=>{
+        if(err){
+            next(err);
+        }
+        let user = result[0];
+        req.logIn(user,(err)=>{
+            if(err){
+                return next(err);
+            }
+            return req.session.save((err)=>{
+                if(err){
+                    return next(err);
+                }
+                res.status(200).send({code : 200, data : user});
+            })
+        })
+    })
 })
 
 module.exports = router;
