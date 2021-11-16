@@ -3,21 +3,20 @@ import styled from 'styled-components';
 
 const Header_container = styled.div`
   display: flex;
-  flex-direction: column;
-  height: 180px;
+  height: 50px;
+  background-color: black;
+  justify-content: right;
+  align-items: center;
 `;
 
 const Login_container = styled.div`
-  margin-top: 10px;
   margin-right: 20px;
   display: flex;
-  justify-content: right;
-  position: relative;
 `;
 
 const Login_textb = styled.button`
   font-size: 15px;
-  color: black;
+  color: white;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -25,9 +24,8 @@ const Login_textb = styled.button`
   font-weight: 500;
 `;
 
-const Header_logo = styled.div`
+const Logo_container = styled.div`
   position: relative;
-  top: -14px;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -35,33 +33,32 @@ const Header_logo = styled.div`
   margin-left: 45px;
 `;
 
-const Header_title_container = styled.div`
+const Logo_shape = styled.div`
   display: flex;
   height: 130px;
   width: 130px;
-  border: 5px solid white;
+  border: 5px solid black;
+  margin-top: 18px;
 `;
 
-const Header_title = styled.div`
+const Logo_title = styled.div`
   margin: 15px 5px;
   font-size: 25px;
   font-weight: 600;
-  color: white;
+  color: black;
   font-family: 'Rock Salt', cursive;
   line-height: 1.35em;
 `;
 
 const Search = styled.div`
-  top: -50px;
   right: 20px;
   display: flex;
-  justify-content: right;
   position: relative;
+  margin-right: 70px;
 `;
 
 const Search_bar = styled.input`
-  width: 15%;
-  height: 38px;
+  height: 30px;
   position: relative;
   border: none;
   background: transparent;
@@ -77,7 +74,7 @@ const Search_btn = styled.button`
   color: white;
   position: absolute;
   right: 0.5%;
-  top: 10px;
+  top: 7px;
   font-size: 18px;
   border: none;
   cursor: pointer;
@@ -85,22 +82,24 @@ const Search_btn = styled.button`
 
 const Header = () => {
   return (
-    <Header_container>
-      <Login_container>
-        <Login_textb>Login</Login_textb>
-      </Login_container>
-      <Header_logo>
-        <Header_title_container>
-          <Header_title>My Music Record.</Header_title>
-        </Header_title_container>
-      </Header_logo>
-      <Search>
-        <Search_bar type="text" placeholder="Search" />
-        <Search_btn type="submit">
-          <i class="fas fa-search"></i>
-        </Search_btn>
-      </Search>
-    </Header_container>
+    <div>
+      <Header_container>
+        <Search>
+          <Search_bar type="text" placeholder="Search" />
+          <Search_btn type="submit">
+            <i class="fas fa-search"></i>
+          </Search_btn>
+        </Search>
+        <Login_container>
+              <Login_textb>Login</Login_textb>
+        </Login_container>
+      </Header_container>
+      <Logo_container>
+        <Logo_shape>
+          <Logo_title>My Music Record.</Logo_title>
+        </Logo_shape>
+      </Logo_container>
+    </div>
   );
 };
 
