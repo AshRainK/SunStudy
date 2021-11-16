@@ -4,7 +4,6 @@ import styled from 'styled-components';
 const Header_container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: black;
   height: 180px;
 `;
 
@@ -18,7 +17,7 @@ const Login_container = styled.div`
 
 const Login_textb = styled.button`
   font-size: 15px;
-  color: white;
+  color: black;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -31,7 +30,7 @@ const Header_logo = styled.div`
   top: -14px;
   display: flex;
   width: 100%;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   margin-left: 45px;
 `;
