@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 const Login_page_container = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const Input_PW = styled.input`
   margin-bottom: 10px;
   padding-left: 10px;
   &:focus{
-    border: 1px solid grey;d
+    border: 1px solid grey;
 `;
 
 const Login_btn = styled.button`
@@ -95,6 +96,10 @@ const Signup_btn = styled.button`
 `;
 
 const Login = () => {
+  const history = useHistory();
+  const onSignupCliked = () => {
+    history.push('/join');
+  };
   return (
     <Login_page_container>
       <Login_text>Login</Login_text>
@@ -107,7 +112,7 @@ const Login = () => {
           <ID_remember>아이디 기억</ID_remember>
         </Login_help>
       </Login_form_container>
-      <Signup_btn>회원가입</Signup_btn>
+      <Signup_btn onClick={onSignupCliked}>회원가입</Signup_btn>
     </Login_page_container>
   );
 };
