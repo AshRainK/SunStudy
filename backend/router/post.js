@@ -5,9 +5,11 @@ const db = require('../lib/database');
 
 //Create
 router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 통해 결과물 전송
+    /*
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
+    */
     const {title,post_body} = req.body;
     db.query(`INSERT INTO post(title,post_body,created_date,id) 
     VALUES(?,?,NOW(),?);`,
@@ -30,9 +32,11 @@ router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 
 //UPDATE
 router.patch('/update',(req,res,next)=>{
     const {post_num,post_body,title} = req.body;
+    /*
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
+    */
     db.query(`SELECT * from post WHERE post_num = ?;`,
     [post_num],
     (err,results)=>{
@@ -61,16 +65,19 @@ router.patch('/update',(req,res,next)=>{
 
 //DELETE
 router.delete('/:post_num',(req,res,next)=>{
+    /*
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, data : '로그인이 필요합니다.'});
     }
+    */
     db.query(`SELECT * FROM post WHERE post_num = ?;`,
     [req.params.post_num],
     (err,results)=>{
+        /*
         if(results[0].id !== req.user.id){
             return res.status(400).send({code : 400, 
                 data : '다른 사람이 작성한 글이므로 삭제 할 수 없습니다.'});
-        }else{
+        }else*///{
             db.query(`DELETE FROM post WHERE post_num = ?;`,
             [req.params.post_num],
             (err)=>{
@@ -79,7 +86,7 @@ router.delete('/:post_num',(req,res,next)=>{
                 }
                 res.status(200).send({code : 200, data : '삭제가 완료 되었습니다.'});
             });
-        }
+        //}
     });
 });
 
@@ -102,6 +109,18 @@ router.get('/:post_num',(req,res,next)=>{
             }
             res.status(200).send({code : 200, data : {post : result[0], user : user_result[0]}});
         });
+    });
+});
+
+//Recent
+router.get('/',(req,res,next)=>{
+    let count = req.query.count?req.query.count : 20;
+    db.query(`SELECT post_num,title,post_body,created_date,updated_date,post.id as writer_id,user_id,nickname FROM post LEFT JOIN user ON post.id = user.id ORDER BY created_date DESC LIMIT ${count}`,
+    (err,result)=>{
+        if(err){
+            next(err);
+        }
+        res.status(200).send({code : 200, data : result});
     });
 });
 

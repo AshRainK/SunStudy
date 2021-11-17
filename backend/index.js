@@ -12,6 +12,7 @@ const app = express();
 const PostRouter = require('./router/post');
 const authRouter = require('./router/auth');
 const regiRouter = require('./router/register');
+const searchRouter = require('./router/search');
 
 app.use(cors());
 app.set('port', process.env.PORT || 8000);
@@ -36,6 +37,7 @@ app.use(passport.session());
 app.use('/post', PostRouter);
 app.use('/auth',authRouter);
 app.use('/register',regiRouter);
+app.use('/search',searchRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
