@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 const Header_container = styled.div`
   display: flex;
@@ -25,12 +26,9 @@ const Login_textb = styled.button`
 `;
 
 const Logo_container = styled.div`
-  position: relative;
   display: flex;
-  width: 100%;
   justify-content: center;
   align-items: center;
-  margin-left: 45px;
 `;
 
 const Logo_shape = styled.div`
@@ -39,6 +37,7 @@ const Logo_shape = styled.div`
   width: 130px;
   border: 5px solid black;
   margin-top: 18px;
+  cursor: pointer;
 `;
 
 const Logo_title = styled.div`
@@ -81,6 +80,17 @@ const Search_btn = styled.button`
 `;
 
 const Header = () => {
+
+  const history = useHistory();
+
+  const onLoginbtnCliked = () => {
+    history.push('/login');
+  };
+
+  const onLogoCliked = () => {
+    history.push('/home');
+  };
+
   return (
     <div>
       <Header_container>
@@ -91,11 +101,11 @@ const Header = () => {
           </Search_btn>
         </Search>
         <Login_container>
-              <Login_textb>Login</Login_textb>
+              <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
         </Login_container>
       </Header_container>
       <Logo_container>
-        <Logo_shape>
+        <Logo_shape onClick={onLogoCliked}>
           <Logo_title>My Music Record.</Logo_title>
         </Logo_shape>
       </Logo_container>
