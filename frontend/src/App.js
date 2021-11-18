@@ -4,6 +4,7 @@ import Header from './Components/Header';
 import Login from './Screen/Login';
 import Join from './Screen/Join';
 import Home from './Screen/Home';
+import Postingpage from './Screen/Postingpage';
 import Postdetail from './Screen/Postdetail';
 import { HashRouter, Route } from 'react-router-dom';
 
@@ -46,6 +47,9 @@ function App() {
             </Route>
             <Route exact path= "/postdetail">
               <Postdetail />
+            </Route>
+            <Route exact path="/postpage">
+              <Postingpage />
             </Route>
           </Main>
         </Body>

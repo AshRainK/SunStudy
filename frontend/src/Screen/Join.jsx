@@ -9,7 +9,6 @@ const CreateAccountBackground = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
 `;
 const CreateAccountform = styled.div`
@@ -17,7 +16,7 @@ const CreateAccountform = styled.div`
   background-color: white;
   flex-direction: column;
   width: 500px;
-  height: 800px;
+  height: 600px;
   justify-content: center;
   align-items: center;
 `;
