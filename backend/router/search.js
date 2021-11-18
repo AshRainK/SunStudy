@@ -11,7 +11,7 @@ router.get('/',(req,res,next)=>{
         if(err){
             next(err);
         }
-        res.status(200).send({code : 200, data : result});
+        res.status(200).send({code : 200, payroad : result});
     });
 });
 
