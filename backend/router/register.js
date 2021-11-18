@@ -42,13 +42,13 @@ router.post('/',(req,res)=>{
     const {id, password, nickname} = req.body // id,password,nickname으로 받아온다고 가정.
     bcrypt.hash(password, saltRounds, function(err, hash) {
         if(err){
-            res.status(409).send({code:409, data : err})
+            res.status(409).send({code:409, payroad : err})
         }
         db.query("INSERT INTO user(user_id,password,nickname) VALUES (?,?,?);",
         [id,hash,nickname],
         (err2)=>{
             if(err2){
-                res.status(400).send({code:400, data : err2});
+                res.status(400).send({code:400, payroad : err2});
             }
         });
     });
@@ -68,7 +68,7 @@ router.post('/',(req,res)=>{
                 if(err){
                     return next(err);
                 }
-                res.status(200).send({code : 200, data : user});
+                res.status(200).send({code : 200, payroad : user});
             })
         })
     })
