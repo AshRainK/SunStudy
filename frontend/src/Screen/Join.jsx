@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import axios from 'axios';
+import styled from "styled-components";
+import axios from "axios";
 
 const CreateAccountBackground = styled.div`
   min-width: 800px;
   min-height: 800px;
   margin: 0px;
-  background-color: #f5f5f5;
+  background-color: white;
   height: 100%;
   width: 100%;
   display: flex;
@@ -21,27 +21,41 @@ const CreateAccountform = styled.div`
   align-items: center;
 `;
 
+const JoinText = styled.div`
+  font-size: 20px;
+  font-weight: bolder;
+`;
+
 const UserId = styled.div`
-  padding: 10px;
+  width: 80%;
   display: flex;
+  padding: 10px;
   flex-direction: column;
+  justify-content: center;
 `;
 
 const UserIdTextBox = styled.input`
-  width: 200px;
-  height: 30px;
+  width: 400px;
+  height: 50px;
+  border: 1px solid lightgrey;
+  outline: none;
   margin-top: 3px;
-  border-radius: 10px;
   border: solid 1px;
 `;
 
 const UserIdBtn = styled.input`
-  margin-left: 10px;
-  width: 100px;
-  height: 30px;
-  cursor: pointer;
-  box-shadow: 0 1px gray;
+  width: 410px;
+  height: 50px;
+  border: 1px solid lightgrey;
+  background-color: black;
+  color: white;
+  outline: none;
+  margin-top: 3px;
+  border: solid 1px;
   border-radius: 5px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const UserPassWord = styled.div`
@@ -49,10 +63,10 @@ const UserPassWord = styled.div`
 `;
 
 const UserPassWordBox = styled.input`
-  width: 310px;
-  height: 30px;
-  border-radius: 10px;
-  border: solid 1px;
+  width: 400px;
+  height: 50px;
+  border: 1px solid lightgrey;
+  outline: none;
 `;
 
 const UserNickname = styled.div`
@@ -60,78 +74,95 @@ const UserNickname = styled.div`
 `;
 
 const UserNicknameBox = styled.input`
-  width: 310px;
-  height: 30px;
-  border-radius: 10px;
+  width: 400px;
+  height: 50px;
+  border: 1px solid lightgrey;
+  outline: none;
+  margin-top: 3px;
   border: solid 1px;
 `;
 
-const ContentSave = styled.div`
-  padding-left: 10px;
-`;
-
 const ContentSaveBtn = styled.input`
-  margin-top: 20px;
-  width: 150px;
-  height: 30px;
-  cursor: pointer;
-  box-shadow: 0 1px gray;
+  width: 410px;
+  height: 50px;
+  border: 1px solid lightgrey;
+  background-color: black;
+  color: white;
+  outline: none;
+  margin-top: 3px;
+  border: solid 1px;
   border-radius: 5px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 function Join() {
   const onContentSaveBtnClicked = async () => {
-    const id = document.querySelector('#id');
-    const password = document.querySelector('#password');
-    const nickname = document.querySelector('#nickname');
+    const id = document.querySelector("#id");
+    const password = document.querySelector("#password");
+    const nickname = document.querySelector("#nickname");
 
-    await axios.post('http://localhost:8000/post/create', { title: 'Hello', post_body: 'world' }).then((response) => console.log(response));
+    await axios
+      .post("http://localhost:8000/post/create", {
+        title: "Hello",
+        post_body: "world",
+      })
+      .then((response) => console.log(response));
   };
 
   return (
     <CreateAccountBackground>
       <CreateAccountform>
-        <div>회원가입</div>
-        <Container>
-          <UserId>
-            <div>ID</div>
-            <div>
-              <UserIdTextBox type="text" name="id" placeholder="아이디를 입력하세요(5~12자)" maxLength="10" minLength="5"></UserIdTextBox>
-              <UserIdBtn type="submit" value="ID 중복 확인"></UserIdBtn>
-            </div>
-          </UserId>
-        </Container>
-        <Container>
-          <UserPassWord>
-            Password <br></br>
-            <UserPassWordBox type="password" name="password" placeholder="비밀번호를 입력하세요"></UserPassWordBox>
-          </UserPassWord>
-        </Container>
+        <JoinText>회원가입</JoinText>
+        <UserId>
+          <div>ID</div>
+          <div>
+            <UserIdTextBox
+              type="text"
+              name="id"
+              placeholder="아이디를 입력하세요(5~12자)"
+              maxLength="10"
+              minLength="5"
+            ></UserIdTextBox>
+            <UserIdBtn type="submit" value="ID 중복 확인"></UserIdBtn>
+          </div>
+        </UserId>
 
-        <Container>
-          <UserPassWord>
-            Password Check <br></br>
-            <UserPassWordBox type="password" name="passwordCheck" placeholder="비밀번호를 입력하세요"></UserPassWordBox>
-          </UserPassWord>
-        </Container>
+        <UserPassWord>
+          Password <br></br>
+          <UserPassWordBox
+            type="password"
+            name="password"
+            placeholder="비밀번호를 입력하세요"
+          ></UserPassWordBox>
+        </UserPassWord>
 
-        <Container>
-          <UserNickname>
-            Nickname <br></br>
-            <UserNicknameBox type="text" name="nickname" placeholder="닉네임을 입력하세요"></UserNicknameBox>
-          </UserNickname>
-        </Container>
+        <UserPassWord>
+          Password Check <br></br>
+          <UserPassWordBox
+            type="password"
+            name="passwordCheck"
+            placeholder="비밀번호를 입력하세요"
+          ></UserPassWordBox>
+        </UserPassWord>
 
-        <Container>
-          <ContentSave>
-            <ContentSaveBtn onClick={onContentSaveBtnClicked} type="submit" value="회원가입"></ContentSaveBtn>
-          </ContentSave>
-        </Container>
+        <UserNickname>
+          Nickname <br></br>
+          <UserNicknameBox
+            type="text"
+            name="nickname"
+            placeholder="닉네임을 입력하세요"
+          ></UserNicknameBox>
+        </UserNickname>
+
+        <ContentSaveBtn
+          onClick={onContentSaveBtnClicked}
+          type="submit"
+          value="회원가입"
+        >
+          {/* <a href="#" onClick="alert('회원가입이 완료되었습니다.')"></a> */}
+        </ContentSaveBtn>
       </CreateAccountform>
     </CreateAccountBackground>
   );
