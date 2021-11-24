@@ -50,7 +50,7 @@ const UserIdBtn = styled.input`
   background-color: black;
   color: white;
   outline: none;
-  margin-top: 3px;
+  margin-top: 10px;
   border: solid 1px;
   border-radius: 5px;
   &:hover {
@@ -70,7 +70,7 @@ const UserPassWordBox = styled.input`
 `;
 
 const UserNickname = styled.div`
-  padding: 10px;
+  padding: 8px;
 `;
 
 const UserNicknameBox = styled.input`
