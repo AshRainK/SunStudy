@@ -43,20 +43,18 @@ const Posttime = styled.div`
   padding: 0px 0px 0px 0px;
 `;
 
-const Image_area = styled.div`
+const Image_area = styled.img`
   height: 154px;
   width: 273px;
-  background-color: black;
-  color: white;
   margin: 5px;
 `;
 
-const Postingcard = ({ title, post_body }) => {
+const Postingcard = ({ title, post_body, genre }) => {
   const onSubmit = () => {};
 
   return (
     <Content>
-      <Image_area></Image_area>
+      <Image_area src={`./img/${genre}360200.png`}></Image_area>
       <Title>{title}</Title>
       <Artist>{post_body}</Artist>
       <User_and_posttime>
