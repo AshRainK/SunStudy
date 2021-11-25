@@ -5,11 +5,19 @@ import { useHistory } from 'react-router-dom';
 const Header_container = styled.div`
   display: flex;
   height: 50px;
+  justify-content: space-between;
   background-color: black;
-  justify-content: right;
   align-items: center;
 `;
 
+const Sidebar_button_toggle = styled.div`
+  margin-left: 20px;
+`;
+
+const Search_login_container = styled.div`
+  display: flex;
+  margin-right: 30px;
+`;
 const Login_container = styled.div`
   margin-right: 20px;
   display: flex;
@@ -50,9 +58,7 @@ const Logo_title = styled.div`
 `;
 
 const Search = styled.div`
-  right: 20px;
   display: flex;
-  position: relative;
   margin-right: 70px;
 `;
 
@@ -71,15 +77,14 @@ const Search_bar = styled.input`
 const Search_btn = styled.button`
   background: transparent;
   color: white;
-  position: absolute;
-  right: 0.5%;
-  top: 7px;
+  position: relative;
+  right: 30px;
   font-size: 18px;
   border: none;
   cursor: pointer;
 `;
 
-const Header = () => {
+const Header = ({ onSidebarToggleButtonClicked }) => {
   const history = useHistory();
 
   const onLoginbtnCliked = () => {
@@ -93,15 +98,20 @@ const Header = () => {
   return (
     <div>
       <Header_container>
-        <Search>
-          <Search_bar type="text" placeholder="Search" />
-          <Search_btn type="submit">
-            <i class="fas fa-search"></i>
-          </Search_btn>
-        </Search>
-        <Login_container>
-          <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
-        </Login_container>
+        <Sidebar_button_toggle>
+          <i style={{ color: 'white', cursor: 'pointer' }} class="fas fa-bars" onClick={onSidebarToggleButtonClicked}></i>
+        </Sidebar_button_toggle>
+        <Search_login_container>
+          <Search>
+            <Search_bar type="text" placeholder="Search" />
+            <Search_btn type="submit">
+              <i class="fas fa-search"></i>
+            </Search_btn>
+          </Search>
+          <Login_container>
+            <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
+          </Login_container>
+        </Search_login_container>
       </Header_container>
       <Logo_container>
         <Logo_shape onClick={onLogoCliked}>
