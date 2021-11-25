@@ -11,14 +11,13 @@ const Sidebar_Container = styled.div`
   background: rgba(0, 0, 0, 0.3);
 `;
 
-const boxFade = keyframes`
+const Sidebar_open = keyframes`
   0% { transform: translateX(-250px); }
   100% { transform: translateX(0px); }
-  
 `;
 
 const Sidebar_Main = styled.div`
-  animation: ${boxFade} 0.2s ease-in-out;
+  animation: ${Sidebar_open} 0.2s ease-in-out;
   width: 265px;
   height: 100%;
   background: rgb(0, 0, 0);
