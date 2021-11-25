@@ -11,15 +11,15 @@ router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 
         return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
     }
     */
-    const {title,post_body,genre} = req.body;
-    db.query(`INSERT INTO post(title,post_body,created_date,id,genre) 
-    VALUES(?,?,NOW(),?,?);`,
-    [title, post_body,req.user.id,genre],
+    const {title,artist,post_body,genre} = req.body;
+    db.query(`INSERT INTO post(title,artist,post_body,created_date,id,genre) 
+    VALUES(?,?,?,NOW(),?,?);`,
+    [title,artist,post_body,req.user.id,genre],
     (err)=>{
         if(err){
             next(err);
         }
-        db.query(`SELECT post_num,title,post_body,created_date,updated_date,id as writer_id, genre FROM post WHERE title = ? and post_body = ? ORDER BY created_date DESC;`,
+        db.query(`SELECT post_num,artist,title,post_body,created_date,updated_date,id as writer_id, genre FROM post WHERE title = ? and post_body = ? ORDER BY created_date DESC;`,
         [title, post_body],
         (err,results)=>{
             if(err){
@@ -32,7 +32,7 @@ router.post('/create', (req, res, next) => { // DB에 저장하고 쿼리문을 
 
 //UPDATE
 router.patch('/update',(req,res,next)=>{
-    const {post_num,post_body,title,genre} = req.body;
+    const {post_num,artist,post_body,title,genre} = req.body;
     /*
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
@@ -45,13 +45,13 @@ router.patch('/update',(req,res,next)=>{
             //return res.status(400).send({code : 400, 
                 //payload : '다른 사람이 작성한 글이므로 수정 할 수 없습니다.'});
         //}else{
-            db.query(`UPDATE post SET title=?, post_body=?, updated_date=NOW(), genre=? WHERE post_num = ?;`,
-            [title,post_body,genre,post_num],
+            db.query(`UPDATE post SET title=?, artist=?, post_body=?, updated_date=NOW(), genre=? WHERE post_num = ?;`,
+            [title,artist,post_body,genre,post_num],
             (err)=>{
                 if(err){
                     next(err);
                 }
-                db.query(`SELECT post_num,title,post_body,created_date,updated_date,id as writer_id, genre FROM post WHERE post_num = ?;`,
+                db.query(`SELECT post_num,artist,title,post_body,created_date,updated_date,id as writer_id, genre FROM post WHERE post_num = ?;`,
                 [post_num],
                 (err, result)=>{
                     if(err){
@@ -93,7 +93,7 @@ router.delete('/:post_num',(req,res,next)=>{
 
 //READ
 router.get('/:post_num',(req,res,next)=>{
-    db.query(`SELECT post_num,title,post_body,created_date,updated_date,id as writer_id,genre FROM post WHERE post_num = ?;`,
+    db.query(`SELECT post_num,artist,title,post_body,created_date,updated_date,id as writer_id,genre FROM post WHERE post_num = ?;`,
     [req.params.post_num],
     (err,result)=>{
         if(err){
@@ -116,7 +116,7 @@ router.get('/:post_num',(req,res,next)=>{
 //Recent
 router.get('/',(req,res,next)=>{
     let count = req.query.count?req.query.count : 20;
-    db.query(`SELECT post_num,title,post_body,created_date,updated_date,post.id as writer_id,post.genre,user_id,nickname FROM post LEFT JOIN user ON post.id = user.id ORDER BY post_num DESC LIMIT ${count}`,
+    db.query(`SELECT post_num,artist,title,post_body,created_date,updated_date,post.id as writer_id,post.genre,user_id,nickname FROM post LEFT JOIN user ON post.id = user.id ORDER BY post_num DESC LIMIT ${count}`,
     (err,result)=>{
         if(err){
             next(err);
