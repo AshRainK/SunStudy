@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import React from 'react';
-import Header from './Components/Header';
-import Login from './Screen/Login';
-import Join from './Screen/Join';
-import Home from './Screen/Home';
-import Postingpage from './Screen/Postingpage';
-import Postdetail from './Screen/Postdetail';
-import { HashRouter, Route } from 'react-router-dom';
+import styled from "styled-components";
+import React from "react";
+import Header from "./Components/Header";
+import Login from "./Screen/Login";
+import Join from "./Screen/Join";
+import Home from "./Screen/Home";
+import Postingpage from "./Screen/Postingpage";
+import Postdetail from "./Screen/Postdetail";
+import { HashRouter, Route } from "react-router-dom";
 
 const Body = styled.div`
   min-width: 1200px;
@@ -17,7 +17,7 @@ const Body = styled.div`
   margin: 0;
   padding: 0;
   font-size: 100%;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 
 const Main = styled.div`
@@ -36,16 +36,16 @@ function App() {
         <Body>
           <Header />
           <Main>
+            <Route exact path="/">
+              <Home />
+            </Route>
             <Route exact path="/login">
               <Login />
             </Route>
             <Route exact path="/join">
               <Join />
             </Route>
-            <Route exact path="/home">
-              <Home />
-            </Route>
-            <Route exact path= "/postdetail">
+            <Route exact path="/postdetail/:post_num">
               <Postdetail />
             </Route>
             <Route exact path="/postpage">

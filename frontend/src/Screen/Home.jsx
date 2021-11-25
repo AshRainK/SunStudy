@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { useParams } from "react-router";
 
 const Body = styled.div`
   width: 100%;
@@ -66,12 +68,20 @@ const Image_area = styled.div`
 
 const Home = () => {
   const onSubmit = () => {};
+  const params = useParams();
+  const [title, setTitle] = useState();
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_SERVER_URL}/post`).then((response) => {
+      console.log(response.data.payroad);
+      // setTitle(response.data.payroad.post.title);
+    });
+  }, [params.post_num]);
   return (
     <Body>
       <Section_row>
         <Content>
           <Image_area></Image_area>
-          <Title>South of the river</Title>
+          <Title>{title}</Title>
           <Artist>Tom Misch</Artist>
           <User_and_posttime>
             <User>USER1</User>
@@ -80,7 +90,7 @@ const Home = () => {
         </Content>
         <Content>
           <Image_area></Image_area>
-          <Title>Movie</Title>
+          <Title>{title}</Title>
           <Artist>Tom Misch</Artist>
           <User_and_posttime>
             <User>USER1</User>
