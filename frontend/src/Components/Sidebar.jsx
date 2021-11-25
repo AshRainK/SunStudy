@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 const Sidebar_Container = styled.div`
   font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
   z-index: 2;
   width: 100%;
   height: 100%;
@@ -11,17 +12,20 @@ const Sidebar_Container = styled.div`
   background: rgba(0, 0, 0, 0.3);
 `;
 
-const boxFade = keyframes`
+const Sidebar_open = keyframes`
   0% { transform: translateX(-250px); }
   100% { transform: translateX(0px); }
-  
 `;
 
 const Sidebar_Main = styled.div`
-  animation: ${boxFade} 0.2s ease-in-out;
+  animation: ${Sidebar_open} 0.2s ease-in-out;
   width: 265px;
   height: 100%;
   background: rgb(0, 0, 0);
+`;
+const Sidebar_blank = styled.div`
+  width: 100%;
+  height: 100%;
 `;
 
 const Sidebar_Button_Container = styled.div`
@@ -49,13 +53,7 @@ const Genre_link = styled(Link)`
   color: white;
 `;
 
-const Sidebar = ({ onSidebarToggleButtonClicked, isSidebarOpened }) => {
-  const history = useHistory();
-  const onGenreItemClicked = (e, genre) => {
-    e.preventDefault();
-    console.log(history);
-  };
-
+const Sidebar = ({ onSidebarToggleButtonClicked }) => {
   return (
     <Sidebar_Container>
       <Sidebar_Main>
@@ -103,6 +101,7 @@ const Sidebar = ({ onSidebarToggleButtonClicked, isSidebarOpened }) => {
           </Genre_item>
         </Genre_list>
       </Sidebar_Main>
+      <Sidebar_blank onClick={onSidebarToggleButtonClicked} />
     </Sidebar_Container>
   );
 };
