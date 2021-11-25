@@ -18,6 +18,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "pm2 start index.js --watch --no-daemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
