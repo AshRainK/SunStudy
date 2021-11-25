@@ -26,7 +26,7 @@ router.patch("/update/aboutme",(req,res,next)=>{
                 if(err){
                     next(err);
                 }
-                res.status(200).send({code : 200, payload : {user_data : user_result[0], genre_result}});
+                res.status(200).send({code : 200, payload : {user : user_result[0], genres : genre_result}});
             });
         });
     });
