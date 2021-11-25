@@ -80,7 +80,6 @@ const Search_btn = styled.button`
 `;
 
 const Header = () => {
-
   const history = useHistory();
 
   const onLoginbtnCliked = () => {
@@ -88,7 +87,7 @@ const Header = () => {
   };
 
   const onLogoCliked = () => {
-    history.push('/home');
+    history.push('/');
   };
 
   return (
@@ -101,7 +100,7 @@ const Header = () => {
           </Search_btn>
         </Search>
         <Login_container>
-              <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
+          <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
         </Login_container>
       </Header_container>
       <Logo_container>
