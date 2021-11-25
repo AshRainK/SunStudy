@@ -14,6 +14,7 @@ const authRouter = require('./router/auth');
 const regiRouter = require('./router/register');
 const searchRouter = require('./router/search');
 const commentRouter = require('./router/comment');
+const mypageRouter = require('./router/mypage');
 
 app.use(cors());
 app.set('port', process.env.PORT || 8000);
@@ -40,6 +41,7 @@ app.use('/auth',authRouter);
 app.use('/register',regiRouter);
 app.use('/search',searchRouter);
 app.use('/comment',commentRouter);
+app.use('/mypage',mypageRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
