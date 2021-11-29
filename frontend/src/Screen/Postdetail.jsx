@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Comments from "../Components/Comments";
 
 const Postdetail_container = styled.div`
   display: flex;
@@ -105,35 +106,11 @@ const Comment_submit_btn = styled.button`
   }
 `;
 
-const Comment_example_container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  font-size: 14pt;
-  font-family: "Lato", sans-serif;
-  margin: 10px;
-  padding: 10px;
-`;
-
-const Comment_username = styled.div`
-  font-size: 10pt;
-  margin-bottom: 5px;
-`;
-
-const Comment_content = styled.div`
-  font-size: 12pt;
-`;
-
-const Comment_date = styled.div`
-  display: flex;
-  font-size: 10pt;
-  justify-content: right;
-`;
-
 const Postdetail = () => {
   const params = useParams();
 
   const [title, setTitle] = useState();
+  const [artist, setArtist] = useState();
   const [body, setBody] = useState();
   const [genre, setGenre ] = useState();
   const [date, setDate] = useState();
@@ -143,9 +120,10 @@ const Postdetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/post/${params.post_num}`)
+    .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
         setTitle(response.data.payload.post.title);
+        setArtist(response.data.payload.post.artist);
         setBody(response.data.payload.post.post_body);
         setGenre(response.data.payload.post.genre);
         setDate(response.data.payload.post.created_date);
@@ -154,7 +132,7 @@ const Postdetail = () => {
       });
 
       axios
-      .get(`http://127.0.0.1:8000/comment/${params.post_num}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/comment/${params.post_num}`)
       .then((response) => {
         setComments(response.data.payload);
         console.log(response.data.payload);
@@ -169,7 +147,7 @@ const Postdetail = () => {
         <Videocontainer></Videocontainer>
         <Music_info>
           <Songtitle_text>{title}</Songtitle_text>
-          <Singer_text>Slik Sonic</Singer_text>
+          <Singer_text>{artist}</Singer_text>
           <Genre_text>{genre}</Genre_text>
         </Music_info>
       </Music_container>
@@ -185,11 +163,7 @@ const Postdetail = () => {
         <Comment_submit_btn>등록</Comment_submit_btn>
       </Comment_wContainer>
       {comments.map((comment, index)=>{
-        return (<Comment_example_container>
-          <Comment_username>{c_nickname}</Comment_username>
-          <Comment_content>dddddddddddddddddddddddd</Comment_content>
-          <Comment_date>2021.11.25</Comment_date>
-        </Comment_example_container>);
+        return <Comments {...comment} />;
       })}
     </Postdetail_container>
   );
