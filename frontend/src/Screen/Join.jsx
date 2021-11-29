@@ -16,7 +16,7 @@ const CreateAccountform = styled.div`
   background-color: white;
   flex-direction: column;
   width: 500px;
-  height: 600px;
+  height: 65-00px;
   justify-content: center;
   align-items: center;
 `;
@@ -40,7 +40,6 @@ const UserIdTextBox = styled.input`
   border: 1px solid lightgrey;
   outline: none;
   margin-top: 3px;
-  border: solid 1px;
 `;
 
 const UserIdBtn = styled.input`
@@ -79,17 +78,34 @@ const UserNicknameBox = styled.input`
   border: 1px solid lightgrey;
   outline: none;
   margin-top: 3px;
+`;
+
+const UserNicknameBtn = styled.div`
+  width: 410px;
+  height: 50px;
+  background-color: black;
+  color: white;
+  font-size: 13px;
+  font-weight: bolder;
+  outline: none;
+  margin-top: 10px;
   border: solid 1px;
+  border-radius: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ContentSaveBtn = styled.input`
   width: 410px;
   height: 50px;
-  border: 1px solid lightgrey;
   background-color: black;
   color: white;
   outline: none;
-  margin-top: 3px;
+  margin-top: 20px;
   border: solid 1px;
   border-radius: 5px;
   &:hover {
@@ -154,6 +170,7 @@ function Join() {
             name="nickname"
             placeholder="닉네임을 입력하세요"
           ></UserNicknameBox>
+          <UserNicknameBtn> 닉네임 중복 확인</UserNicknameBtn>
         </UserNickname>
 
         <ContentSaveBtn
