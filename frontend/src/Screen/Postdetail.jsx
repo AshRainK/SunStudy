@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Comments from "../Components/Comments";
 
 const Postdetail_container = styled.div`
   display: flex;
@@ -59,6 +60,7 @@ const Music_review = styled.div`
 `;
 
 const Music_review_info = styled.div`
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
 `;
@@ -104,47 +106,40 @@ const Comment_submit_btn = styled.button`
   }
 `;
 
-const Comment_example_container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  font-size: 14pt;
-  font-family: "Lato", sans-serif;
-  margin: 10px;
-  padding: 10px;
-`;
-
-const Comment_username = styled.div`
-  font-size: 10pt;
-  margin-bottom: 5px;
-`;
-
-const Comment_content = styled.div`
-  font-size: 12pt;
-`;
-
-const Comment_date = styled.div`
-  display: flex;
-  font-size: 10pt;
-  justify-content: right;
-`;
-
 const Postdetail = () => {
   const params = useParams();
 
   const [title, setTitle] = useState();
+  const [artist, setArtist] = useState();
   const [body, setBody] = useState();
+  const [genre, setGenre ] = useState();
+  const [date, setDate] = useState();
+  const [nickname, setNickname] = useState();
 
-  console.log(params);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/post/${params.post_num}`)
+    .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
-        setTitle(response.data.data.post.title);
-        setBody(response.data.data.post.post_body);
+        setTitle(response.data.payload.post.title);
+        setArtist(response.data.payload.post.artist);
+        setBody(response.data.payload.post.post_body);
+        setGenre(response.data.payload.post.genre);
+        setDate(response.data.payload.post.created_date);
+        setNickname(response.data.payload.user.nickname);
+        console.log(response.data.payload);
       });
+
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/comment/${params.post_num}`)
+      .then((response) => {
+        setComments(response.data.payload);
+        console.log(response.data.payload);
+      });
+
   }, [params.post_num]);
+
 
   return (
     <Postdetail_container>
@@ -152,26 +147,24 @@ const Postdetail = () => {
         <Videocontainer></Videocontainer>
         <Music_info>
           <Songtitle_text>{title}</Songtitle_text>
-          <Singer_text>Slik Sonic</Singer_text>
-          <Genre_text>R&B</Genre_text>
+          <Singer_text>{artist}</Singer_text>
+          <Genre_text>{genre}</Genre_text>
         </Music_info>
       </Music_container>
       <Music_review>
         {body}
         <Music_review_info>
-          <Music_review_date>2021.11.25</Music_review_date>
-          <Music_review_user>qkrco</Music_review_user>
+          <Music_review_date>{date}</Music_review_date>
+          <Music_review_user>{nickname}</Music_review_user>
         </Music_review_info>
       </Music_review>
       <Comment_wContainer>
         <Commentbox placeholder="NEW COMMENT"></Commentbox>
         <Comment_submit_btn>등록</Comment_submit_btn>
       </Comment_wContainer>
-      <Comment_example_container>
-        <Comment_username>qkrco</Comment_username>
-        <Comment_content>dddddddddddddddddddddddd</Comment_content>
-        <Comment_date>2021.11.25</Comment_date>
-      </Comment_example_container>
+      {comments.map((comment, index)=>{
+        return <Comments {...comment} />;
+      })}
     </Postdetail_container>
   );
 };
