@@ -83,36 +83,34 @@ const Sidebar = ({ onSidebarToggleButtonClicked }) => {
         <Genre_Title>Genre</Genre_Title>
         <Genre_list>
           <Genre_div>
-            <Genre_item onClick={onSidebarToggleButtonClicked}>
-              <Genre_link to="/genre/kpop">K-pop</Genre_link>
-            </Genre_item>
+            <Genre_link to="/genre/kpop">
+              <Genre_item onClick={onSidebarToggleButtonClicked}>K-pop</Genre_item>
+            </Genre_link>
           </Genre_div>
           <Genre_div>
-            <Genre_item onClick={onSidebarToggleButtonClicked}>
-              <Genre_link to="/genre/disco" onClick={onSidebarToggleButtonClicked}>
-                Disco
-              </Genre_link>
-            </Genre_item>
+            <Genre_link to="/genre/disco" onClick={onSidebarToggleButtonClicked}>
+              <Genre_item onClick={onSidebarToggleButtonClicked}>Disco</Genre_item>
+            </Genre_link>
           </Genre_div>
           <Genre_div>
-            <Genre_item onClick={onSidebarToggleButtonClicked}>
-              <Genre_link to="/genre/jazz">Jazz</Genre_link>
-            </Genre_item>
+            <Genre_link to="/genre/jazz">
+              <Genre_item onClick={onSidebarToggleButtonClicked}>Jazz</Genre_item>
+            </Genre_link>
           </Genre_div>
           <Genre_div>
-            <Genre_item onClick={onSidebarToggleButtonClicked}>
-              <Genre_link to="/genre/electronic">Electronic Music</Genre_link>
-            </Genre_item>
+            <Genre_link to="/genre/electronic">
+              <Genre_item onClick={onSidebarToggleButtonClicked}>Electronic Music</Genre_item>
+            </Genre_link>
           </Genre_div>
           <Genre_div>
-            <Genre_item onClick={onSidebarToggleButtonClicked}>
-              <Genre_link to="/genre/pop">Pop</Genre_link>
-            </Genre_item>
+            <Genre_link to="/genre/pop">
+              <Genre_item onClick={onSidebarToggleButtonClicked}>Pop</Genre_item>
+            </Genre_link>
           </Genre_div>
           <Genre_div>
-            <Genre_item onClick={onSidebarToggleButtonClicked}>
-              <Genre_link to="/genre/rock">Rock</Genre_link>
-            </Genre_item>
+            <Genre_link to="/genre/rock">
+              <Genre_item onClick={onSidebarToggleButtonClicked}>Rock</Genre_item>
+            </Genre_link>
           </Genre_div>
         </Genre_list>
       </Sidebar_Main>
