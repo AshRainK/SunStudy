@@ -49,14 +49,14 @@ const Image_area = styled.img`
   margin: 5px;
 `;
 
-const Postingcard = ({ title, post_body, genre }) => {
+const Postingcard = ({ title, artist, genre }) => {
   const onSubmit = () => {};
 
   return (
     <Content>
       <Image_area src={`./img/${genre}360200.png`}></Image_area>
       <Title>{title}</Title>
-      <Artist>{post_body}</Artist>
+      <Artist>{artist}</Artist>
       <User_and_posttime>
         <User>USER1</User>
         <Posttime>1일전</Posttime>
