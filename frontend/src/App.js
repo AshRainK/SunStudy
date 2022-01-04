@@ -1,13 +1,14 @@
-import styled from 'styled-components';
-import React, { useState } from 'react';
-import Header from './Components/Header';
-import Login from './Screen/Login';
-import Join from './Screen/Join';
-import Home from './Screen/Home';
-import Postingpage from './Screen/Postingpage';
-import Postdetail from './Screen/Postdetail';
-import { HashRouter, Route } from 'react-router-dom';
-import Sidebar from './Components/Sidebar';
+import styled from "styled-components";
+import React, { useState } from "react";
+import Header from "./Components/Header";
+import Login from "./Screen/Login";
+import Join from "./Screen/Join";
+import Home from "./Screen/Home";
+import Postingpage from "./Screen/Postingpage";
+import Postdetail from "./Screen/Postdetail";
+import { HashRouter, Route } from "react-router-dom";
+import Sidebar from "./Components/Sidebar";
+import Genre from "./Screen/Genre";
 
 const Body = styled.div`
   min-width: 1200px;
@@ -18,7 +19,7 @@ const Body = styled.div`
   margin: 0;
   padding: 0;
   font-size: 100%;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 
 const Main = styled.div`
@@ -39,7 +40,12 @@ function App() {
   return (
     <div className="App">
       <HashRouter>
-        {isSidebarOpened && <Sidebar isSidebarOpened={isSidebarOpened} onSidebarToggleButtonClicked={onSidebarToggleButtonClicked} />}
+        {isSidebarOpened && (
+          <Sidebar
+            isSidebarOpened={isSidebarOpened}
+            onSidebarToggleButtonClicked={onSidebarToggleButtonClicked}
+          />
+        )}
         <Body>
           <Header onSidebarToggleButtonClicked={onSidebarToggleButtonClicked} />
           <Main>
@@ -57,6 +63,9 @@ function App() {
             </Route>
             <Route exact path="/postpage">
               <Postingpage />
+            </Route>
+            <Route eaact path="/genre/:genre">
+              <Genre />
             </Route>
           </Main>
         </Body>

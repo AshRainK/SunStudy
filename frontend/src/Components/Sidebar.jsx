@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useEffect } from "react";
+import styled, { keyframes } from "styled-components";
+import { Link, useHistory } from "react-router-dom";
 const Sidebar_Container = styled.div`
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   display: flex;
   z-index: 2;
   width: 100%;
@@ -73,9 +73,9 @@ const Sidebar = ({ onSidebarToggleButtonClicked }) => {
         <Sidebar_Button_Container>
           <i
             className="fas fa-times"
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
             onClick={() => {
-              console.log('Clicked');
+              console.log("Clicked");
             }}
             onClick={onSidebarToggleButtonClicked}
           ></i>
@@ -83,33 +83,55 @@ const Sidebar = ({ onSidebarToggleButtonClicked }) => {
         <Genre_Title>Genre</Genre_Title>
         <Genre_list>
           <Genre_div>
-            <Genre_link to="/genre/kpop">
-              <Genre_item onClick={onSidebarToggleButtonClicked}>K-pop</Genre_item>
+            <Genre_link to="/genre/k-pop">
+              <Genre_item onClick={onSidebarToggleButtonClicked}>
+                K-pop
+              </Genre_item>
             </Genre_link>
           </Genre_div>
           <Genre_div>
-            <Genre_link to="/genre/disco" onClick={onSidebarToggleButtonClicked}>
-              <Genre_item onClick={onSidebarToggleButtonClicked}>Disco</Genre_item>
+            <Genre_link
+              to="/genre/disco"
+              onClick={onSidebarToggleButtonClicked}
+            >
+              <Genre_item onClick={onSidebarToggleButtonClicked}>
+                Disco
+              </Genre_item>
             </Genre_link>
           </Genre_div>
           <Genre_div>
             <Genre_link to="/genre/jazz">
-              <Genre_item onClick={onSidebarToggleButtonClicked}>Jazz</Genre_item>
+              <Genre_item onClick={onSidebarToggleButtonClicked}>
+                Jazz
+              </Genre_item>
             </Genre_link>
           </Genre_div>
           <Genre_div>
             <Genre_link to="/genre/electronic">
-              <Genre_item onClick={onSidebarToggleButtonClicked}>Electronic Music</Genre_item>
+              <Genre_item onClick={onSidebarToggleButtonClicked}>
+                Electronic Music
+              </Genre_item>
             </Genre_link>
           </Genre_div>
           <Genre_div>
             <Genre_link to="/genre/pop">
-              <Genre_item onClick={onSidebarToggleButtonClicked}>Pop</Genre_item>
+              <Genre_item onClick={onSidebarToggleButtonClicked}>
+                Pop
+              </Genre_item>
             </Genre_link>
           </Genre_div>
           <Genre_div>
             <Genre_link to="/genre/rock">
-              <Genre_item onClick={onSidebarToggleButtonClicked}>Rock</Genre_item>
+              <Genre_item onClick={onSidebarToggleButtonClicked}>
+                Rock
+              </Genre_item>
+            </Genre_link>
+          </Genre_div>
+          <Genre_div>
+            <Genre_link to="/genre/hip-hop">
+              <Genre_item onClick={onSidebarToggleButtonClicked}>
+                Hip-hop
+              </Genre_item>
             </Genre_link>
           </Genre_div>
         </Genre_list>
