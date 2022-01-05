@@ -9,6 +9,9 @@ import Postdetail from "./Screen/Postdetail";
 import { HashRouter, Route } from "react-router-dom";
 import Sidebar from "./Components/Sidebar";
 import Genre from "./Screen/Genre";
+import Mypage from "./Screen/Mypage";
+import MypageEdit from "./Screen/MypageEdit";
+
 
 const Body = styled.div`
   min-width: 1200px;
@@ -64,8 +67,14 @@ function App() {
             <Route exact path="/postpage">
               <Postingpage />
             </Route>
-            <Route eaact path="/genre/:genre">
+            <Route exact path="/genre/:genre">
               <Genre />
+            </Route>
+            <Route exact path="/mypage">
+              <Mypage />
+            </Route>
+            <Route exact path="/mypageedit">
+              <MypageEdit />
             </Route>
           </Main>
         </Body>
