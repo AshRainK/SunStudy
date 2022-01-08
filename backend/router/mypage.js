@@ -8,19 +8,19 @@ const passport = require('passport');
 
 router.patch("/aboutme",(req,res,next)=>{
     const aboutme = req.body.aboutme;
-    db.query(`UPDATE user SET about_me = ? WHERE id = ?`,
+    db.query(`UPDATE user SET about_me = ? WHERE id = ?;`,
     [aboutme,req.user.id],
     (err)=>{
         if(err){
             next(err);
         }
-        db.query(`SELECT id,user_id,nickname,about_me FROM user WHERE id = ?`,
+        db.query(`SELECT id,user_id,nickname,about_me FROM user WHERE id = ?;`,
         [req.user.id],
         (err,user_result)=>{
             if(err){
                 next(err);
             }
-            db.query('SELECT genre FROM genre WHERE id = ?',
+            db.query('SELECT genre FROM genre WHERE id = ?;',
             [req.user.id],
             (err,genre_result)=>{
                 if(err){
@@ -35,7 +35,7 @@ router.patch("/aboutme",(req,res,next)=>{
 router.patch("/password",(req,res,next)=>{
     const id = req.user.id;
     const {old_Password,new_Password} = req.body;
-    db.query(`SELECT * FROM user WHERE id = ?`,
+    db.query(`SELECT * FROM user WHERE id = ?;`,
     [id],
     (err, results)=>{
         if(err){
@@ -52,7 +52,7 @@ router.patch("/password",(req,res,next)=>{
                     if(err2){
                         next(err2);
                     }
-                    db.query(`UPDATE user SET password = ? WHERE id = ?`,
+                    db.query(`UPDATE user SET password = ? WHERE id = ?;`,
                     [hash,id],
                     (err3,result)=>{
                         if(err3){
@@ -69,7 +69,7 @@ router.patch("/password",(req,res,next)=>{
 router.patch("/nickname",(req,res,next)=>{
     const id = req.user.id;
     const nickname = req.body.nickname;
-    db.query(`UPDATE user SET nickname = ? WHERE id = ?`,
+    db.query(`UPDATE user SET nickname = ? WHERE id = ?;`,
     [nickname,id],
     (err)=>{
         if(err){
@@ -79,15 +79,37 @@ router.patch("/nickname",(req,res,next)=>{
     })
 });
 
+router.patch("/genre",(req,res,next)=>{
+    const genre = req.body.genre;
+    const id = req.user.id;
+    db.query(`DELETE FROM genre WHERE id = ?;`,
+    [id],
+    (err)=>{
+        if(err){
+            next(err);
+        }
+    });
+    for(let i=0; i<genre.length; i++){
+        db.query(`INSERT INTO genre(genre,id) VALUES(?,?);`,
+        [genre[i],id],
+        (err)=>{
+            if(err){
+                next(err);
+            }
+        });
+    };
+    res.status(201).send({code : 201 , payload : "선호 장르 업데이트가 완료 되었습니다."});
+});
+
 router.get("/",(req,res,next)=>{
     const id = req.user.id;
-    db.query(`SELECT * FROM user WHERE id = ?`,
+    db.query(`SELECT * FROM user WHERE id = ?;`,
     [id],
     (err,user_result)=>{
         if(err){
             next(err);
         }
-        db.query(`SELECT genre FROM genre WHERE id = ?`,
+        db.query(`SELECT genre FROM genre WHERE id = ?;`,
         [id],
         (err2,genre_result)=>{
             if(err2){
