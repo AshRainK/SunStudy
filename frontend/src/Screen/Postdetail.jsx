@@ -141,6 +141,13 @@ const Postdetail = () => {
 
   const [comments, setComments] = useState([]);
 
+  const [comment, setComment] = useState("");
+
+  const onChange = (e) => {
+    e.preventDefault();
+    setComment(e.target.value);
+  }
+
   useEffect(() => {
     axios
     .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
@@ -159,14 +166,16 @@ const Postdetail = () => {
       .then((response) => {
         setComments(response.data.payload);
       });
-
-      axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/comment/create`,{
-      })
-      .then((response)=>{
-      });
-
   }, [params.post_num]);
+
+  const onCreateCommentButtonClick = () => {
+    axios
+    .post(`${process.env.REACT_APP_SERVER_URL}/comment/create`,{
+      comment,post_num: params.post_num}, { withCredentials: true })
+    .then((response)=>{
+      console.log(response);
+    });
+  }
 
 
   return (
@@ -191,8 +200,14 @@ const Postdetail = () => {
         </Posting_func>
       </Music_review>
       <Comment_wContainer>
-        <Commentbox placeholder="WRITE COMMENT"></Commentbox>
-        <Comment_submit_btn type="submit">등록</Comment_submit_btn>
+        <Commentbox 
+          placeholder="WRITE COMMENT" 
+          onChange={onChange}
+          value = {comment}
+          ></Commentbox>
+        <Comment_submit_btn 
+          type="submit"
+          onClick = {onCreateCommentButtonClick}>등록</Comment_submit_btn>
       </Comment_wContainer>
       {comments.map((comment, index)=>{
         return <Comments {...comment} />;
