@@ -19,7 +19,6 @@ const Home = () => {
   const [postings, setPostings] = useState([]);
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_SERVER_URL}/post`).then((response) => {
-      console.log(response.data.payload);
       setPostings(response.data.payload);
     });
   }, [params.post_num]);
