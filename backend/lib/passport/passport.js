@@ -9,7 +9,7 @@ module.exports = ()=>{
     });
 
     passport.deserializeUser((id,done)=>{
-        db.query('SELECT id,user_id,password,nickname FROM user WHERE id = ?',
+        db.query('SELECT id,user_id,password,nickname,about_me FROM user WHERE id = ?',
         [id],
         (err,results)=>{
             if(err){
