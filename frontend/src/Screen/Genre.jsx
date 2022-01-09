@@ -22,7 +22,6 @@ const Genre = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/search/genres/${params.genre}`)
       .then((response) => {
-        console.log(response.data.payload);
         setPostings(response.data.payload);
       });
   }, [params.genre]);
