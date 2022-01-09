@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import axios from "axios";
+import React, { useState } from "react";
 
 const CreateAccountBackground = styled.div`
   min-width: 800px;
@@ -114,17 +115,109 @@ const ContentSaveBtn = styled.input`
 `;
 
 function Join() {
-  const onContentSaveBtnClicked = async () => {
-    const id = document.querySelector("#id");
-    const password = document.querySelector("#password");
-    const nickname = document.querySelector("#nickname");
+  const [id, setID] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordcheck] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [isIdCheckPassed, setIsIdCheckPassed] = useState(false);
+  const [isNicknamePassed, setIsNicknamePassed] = useState(false);
 
-    await axios
-      .post("http://localhost:8000/post/create", {
-        title: "Hello",
-        post_body: "world",
-      })
-      .then((response) => console.log(response));
+  const onChange = (e) => {
+    e.preventDefault();
+    switch (e.target.name) {
+      case "id":
+        setID(e.target.value);
+        console.log(id);
+        break;
+      case "password":
+        setPassword(e.target.value);
+        console.log(password);
+        break;
+      case "passwordCheck":
+        setPasswordcheck(e.target.value);
+        console.log(passwordCheck);
+        break;
+      case "nickname":
+        setNickname(e.target.value);
+        console.log(nickname);
+        break;
+    }
+  };
+
+  const onSubmitIdCheck = () => {
+    if (id === "") {
+      return window.alert("아이디를 입력해주세요");
+    }
+
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/register/check_id`,
+        { id },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response);
+        checkIdAvailable(response.data.already_exist);
+      });
+  };
+
+  const checkIdAvailable = (already) => {
+    if (already) {
+      window.alert("이미 사용중인 아이디입니다.");
+    } else {
+      setIsIdCheckPassed(true);
+      window.alert("사용 가능한 아이디입니다.");
+    }
+  };
+
+  const onSubmitNicknameCheck = () => {
+    if (nickname === "") {
+      return window.alert("닉네임을 입력해주세요");
+    }
+
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/register/check_nickname`,
+        { nickname },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response);
+        checkNicknameAvailable(response.data.already_exist);
+      });
+  };
+  const checkNicknameAvailable = (already) => {
+    if (already) {
+      window.alert("이미 사용중인 닉네임입니다.");
+    } else {
+      setIsNicknamePassed(true);
+      window.alert("사용 가능한 닉네임입니다.");
+    }
+  };
+
+  const onSubmitJoinButton = () => {
+    if (password === "") {
+      return window.alert("비밀번호를 입력해주세요");
+    }
+    if (passwordCheck === "") {
+      return window.alert("비밀번호를 입력해주세요");
+    }
+    if (password !== passwordCheck) {
+      return window.alert("비밀번호를 확인해주세요");
+    }
+
+    if (isIdCheckPassed && isNicknamePassed) {
+      axios
+        .post(
+          `${process.env.REACT_APP_SERVER_URL}/register`,
+          { id, password, nickname },
+          { withCredentials: true }
+        )
+        .then((response) => {
+          console.log(response);
+          window.alert("회원가입이 완료되었습니다");
+        });
+    }
   };
 
   return (
@@ -140,8 +233,14 @@ function Join() {
               placeholder="아이디를 입력하세요(5~12자)"
               maxLength="10"
               minLength="5"
+              onChange={onChange}
+              value={id}
             ></UserIdTextBox>
-            <UserIdBtn type="submit" value="ID 중복 확인"></UserIdBtn>
+            <UserIdBtn
+              type="submit"
+              onClick={onSubmitIdCheck}
+              value="ID 중복 확인"
+            ></UserIdBtn>
           </div>
         </UserId>
 
@@ -151,6 +250,8 @@ function Join() {
             type="password"
             name="password"
             placeholder="비밀번호를 입력하세요"
+            onChange={onChange}
+            value={password}
           ></UserPassWordBox>
         </UserPassWord>
 
@@ -160,6 +261,8 @@ function Join() {
             type="password"
             name="passwordCheck"
             placeholder="비밀번호를 입력하세요"
+            onChange={onChange}
+            value={passwordCheck}
           ></UserPassWordBox>
         </UserPassWord>
 
@@ -169,12 +272,16 @@ function Join() {
             type="text"
             name="nickname"
             placeholder="닉네임을 입력하세요"
+            onChange={onChange}
+            value={nickname}
           ></UserNicknameBox>
-          <UserNicknameBtn> 닉네임 중복 확인</UserNicknameBtn>
+          <UserNicknameBtn onClick={onSubmitNicknameCheck}>
+            닉네임 중복 확인
+          </UserNicknameBtn>
         </UserNickname>
 
         <ContentSaveBtn
-          onClick={onContentSaveBtnClicked}
+          onClick={onSubmitJoinButton}
           type="submit"
           value="회원가입"
         >
