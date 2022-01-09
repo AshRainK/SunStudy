@@ -10,7 +10,6 @@ module.exports = () =>{
             passwordField : 'password'
         },
         function(username,password,done){
-            let total_result;
             db.query('SELECT id,user_id,password,nickname,about_me FROM user WHERE user_id = ?',
             [username],
             (err,results)=>{
