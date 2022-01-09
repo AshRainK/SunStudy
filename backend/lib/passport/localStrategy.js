@@ -10,7 +10,8 @@ module.exports = () =>{
             passwordField : 'password'
         },
         function(username,password,done){
-            db.query('SELECT id,user_id,password,nickname FROM user WHERE user_id = ?',
+            let total_result;
+            db.query('SELECT id,user_id,password,nickname,about_me FROM user WHERE user_id = ?',
             [username],
             (err,results)=>{
                 if(err){
@@ -23,7 +24,11 @@ module.exports = () =>{
                             return done(err);
                         }
                         if(result){
-                            return done(null, results[0]);
+                            db.query(`SELECT genre FROM genre WHERE id =?`,
+                            [results[0].id],
+                            (err,genre_result)=>{
+                                return done(null, {...results[0], genres:genre_result.map(genre => genre.genre)});
+                            });
                         }
                         else{
                             return done(null, false, { message: '잘못된 비밀번호를 입력하였습니다.' });
