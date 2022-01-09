@@ -61,7 +61,7 @@ function App() {
             <Route exact path="/join">
               <Join />
             </Route>
-            <Route exact path="/postdetail/:post_num/:hello">
+            <Route exact path="/postdetail/:post_num">
               <Postdetail />
             </Route>
             <Route exact path="/postpage">
