@@ -145,27 +145,25 @@ const Postdetail = () => {
     axios
     .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
-        setTitle(response.data.payload.post.title);
-        setArtist(response.data.payload.post.artist);
-        setBody(response.data.payload.post.post_body);
-        setGenre(response.data.payload.post.genre);
-        setDate(response.data.payload.post.created_date);
+         const { title, artist, post_body, genre, created_date} = response.data.payload.post
+        setTitle(title);
+        setArtist(artist);
+        setBody(post_body);
+        setGenre(genre);
+        setDate(created_date);
         setNickname(response.data.payload.user.nickname);
-        console.log(response.data.payload);
       });
 
       axios
       .get(`${process.env.REACT_APP_SERVER_URL}/comment/${params.post_num}`)
       .then((response) => {
         setComments(response.data.payload);
-        console.log(response.data.payload);
       });
 
       axios
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/create`,{
       })
       .then((response)=>{
-        console.log(response);
       });
 
   }, [params.post_num]);
