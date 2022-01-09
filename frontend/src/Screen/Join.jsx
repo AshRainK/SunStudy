@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import axios from "axios";
+import React, { useState } from "react";
 
 const CreateAccountBackground = styled.div`
   min-width: 800px;
@@ -114,17 +115,43 @@ const ContentSaveBtn = styled.input`
 `;
 
 function Join() {
-  const onContentSaveBtnClicked = async () => {
-    const id = document.querySelector("#id");
-    const password = document.querySelector("#password");
-    const nickname = document.querySelector("#nickname");
+  const [id, setID] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordcheck] = useState("");
+  const [nickname, setNickname] = useState("");
 
-    await axios
-      .post("http://localhost:8000/post/create", {
-        title: "Hello",
-        post_body: "world",
-      })
-      .then((response) => console.log(response));
+  const onChange = (e) => {
+    e.preventDefault();
+    switch (e.target.name) {
+      case "id":
+        setID(e.target.value);
+        console.log(id);
+        break;
+      case "password":
+        setPassword(e.target.value);
+        console.log(password);
+        break;
+      case "passwordCheck":
+        setPasswordcheck(e.target.value);
+        console.log(passwordCheck);
+        break;
+      case "nickname":
+        setNickname(e.target.value);
+        console.log(nickname);
+        break;
+    }
+  };
+
+  const onSubmitId = () => {
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/register/check_id`,
+        { id },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   return (
@@ -140,8 +167,14 @@ function Join() {
               placeholder="아이디를 입력하세요(5~12자)"
               maxLength="10"
               minLength="5"
+              onChange={onChange}
+              value={id}
             ></UserIdTextBox>
-            <UserIdBtn type="submit" value="ID 중복 확인"></UserIdBtn>
+            <UserIdBtn
+              type="submit"
+              onClick={onSubmitId}
+              value="ID 중복 확인"
+            ></UserIdBtn>
           </div>
         </UserId>
 
@@ -151,6 +184,8 @@ function Join() {
             type="password"
             name="password"
             placeholder="비밀번호를 입력하세요"
+            onChange={onChange}
+            value={password}
           ></UserPassWordBox>
         </UserPassWord>
 
@@ -160,6 +195,8 @@ function Join() {
             type="password"
             name="passwordCheck"
             placeholder="비밀번호를 입력하세요"
+            onChange={onChange}
+            value={passwordCheck}
           ></UserPassWordBox>
         </UserPassWord>
 
@@ -169,12 +206,14 @@ function Join() {
             type="text"
             name="nickname"
             placeholder="닉네임을 입력하세요"
+            onChange={onChange}
+            value={nickname}
           ></UserNicknameBox>
           <UserNicknameBtn> 닉네임 중복 확인</UserNicknameBtn>
         </UserNickname>
 
         <ContentSaveBtn
-          onClick={onContentSaveBtnClicked}
+          // onClick={onContentSaveBtnClicked}
           type="submit"
           value="회원가입"
         >
