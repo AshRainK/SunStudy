@@ -71,7 +71,30 @@ const Music_review_date = styled.div`
 
 const Music_review_user = styled.div`
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
+`;
+
+const Posting_func = styled.div`
+  display: flex;
+  justify-content: right;
+`;
+
+const Posting_modify = styled.button`
+  padding: 15px;
+  font-size: 10pt;
+  display: flex;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const Posting_delete = styled.button`
+  padding: 15px 0;
+  font-size: 10pt;
+  display: flex;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 const Comment_wContainer = styled.div`
@@ -138,6 +161,13 @@ const Postdetail = () => {
         console.log(response.data.payload);
       });
 
+      axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/comment/create`,{
+      })
+      .then((response)=>{
+        console.log(response);
+      });
+
   }, [params.post_num]);
 
 
@@ -157,10 +187,14 @@ const Postdetail = () => {
           <Music_review_date>{date}</Music_review_date>
           <Music_review_user>{nickname}</Music_review_user>
         </Music_review_info>
+        <Posting_func>
+          <Posting_modify>수정</Posting_modify>
+          <Posting_delete>삭제</Posting_delete>
+        </Posting_func>
       </Music_review>
       <Comment_wContainer>
-        <Commentbox placeholder="NEW COMMENT"></Commentbox>
-        <Comment_submit_btn>등록</Comment_submit_btn>
+        <Commentbox placeholder="WRITE COMMENT"></Commentbox>
+        <Comment_submit_btn type="submit">등록</Comment_submit_btn>
       </Comment_wContainer>
       {comments.map((comment, index)=>{
         return <Comments {...comment} />;

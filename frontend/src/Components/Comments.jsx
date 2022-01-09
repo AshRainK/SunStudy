@@ -26,12 +26,39 @@ const Comment_date = styled.div`
   justify-content: right;
 `;
 
+const Comment_func = styled.div`
+  display: flex;
+  justify-content: right;
+`;
+
+const Modify = styled.button`
+  padding: 5px;
+  font-size: 8pt;
+  display: flex;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const Delete = styled.button`
+  padding: 5px;
+  font-size: 8pt;
+  display: flex;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
 const Comments = ({ nickname,comment,written_date }) => { 
     return (
     <Comment_container>
         <Comment_username>{nickname}</Comment_username>
         <Comment_content>{comment}</Comment_content>
         <Comment_date>{written_date}</Comment_date>
+        <Comment_func>
+          <Modify>수정</Modify>
+          <Delete>삭제</Delete>
+        </Comment_func>
     </Comment_container>
     );
   };
