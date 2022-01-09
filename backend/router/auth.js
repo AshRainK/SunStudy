@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const passport = require('passport');
+const db = require('../lib/database');
 
 router.post('/login',(req,res,next)=>{
     passport.authenticate('local',(err,user,info)=>{
@@ -27,7 +28,14 @@ router.post('/login',(req,res,next)=>{
 
 router.get('/login',(req,res)=>{
     if(req.isAuthenticated && req.user){
-        res.status(200).send({code : 200, payload : req.user});
+        db.query(`SELECT genre FROM genre WHERE id = ?`,
+        [req.user.id],
+        (err,result)=>{
+            if(err){
+                next(err);
+            }
+            res.status(200).send({code : 200, payload : {...req.user, genres:result.map(genre => genre.genre)}});
+        })
     } else{
         res.status(400).send({code : 400, payload : null});
     }
