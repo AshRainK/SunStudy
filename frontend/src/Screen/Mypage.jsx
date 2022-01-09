@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory, useParams } from 'react-router-dom';
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 const Mypage_container = styled.div`
     display: flex;
@@ -89,11 +89,29 @@ const Line = styled.div`
 
 
 const Mypage = () => {
+    const history = useHistory();
+    const onEditCliked = () => {
+      history.push('/mypageedit');
+    };
+
+    console.log();
+    const [nickname, setNickname] = useState();
+    const [aboutme, setAboutme] = useState([]);
+    
+    useEffect(() => {
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/mypage/`)
+        .then((response) => {
+            console.log(response.data.payload);
+        });
+    }, []);
+  
+
     return(
         <Mypage_container>
             <Myprofile>
                 My Profile
-                <Edit_btn><i class="fas fa-edit"></i></Edit_btn>
+                <Edit_btn onClick={onEditCliked}><i class="fas fa-edit"></i></Edit_btn>
             </Myprofile>
             <Nickname_container>
                 Nickname
