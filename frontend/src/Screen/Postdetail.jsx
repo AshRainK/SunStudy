@@ -140,7 +140,6 @@ const Postdetail = () => {
   const [nickname, setNickname] = useState();
 
   const [comments, setComments] = useState([]);
-
   const [comment, setComment] = useState("");
 
   const onChange = (e) => {
@@ -173,7 +172,7 @@ const Postdetail = () => {
     .post(`${process.env.REACT_APP_SERVER_URL}/comment/create`,{
       comment,post_num: params.post_num}, { withCredentials: true })
     .then((response)=>{
-      console.log(response);
+      setComments(response.data.payload)
     });
   }
 
