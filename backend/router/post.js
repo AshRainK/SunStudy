@@ -123,7 +123,7 @@ router.get("/:post_num", (req, res, next) => {
 router.get("/", (req, res, next) => {
   let count = req.query.count ? req.query.count : 20;
   db.query(
-    `SELECT post_num,artist,title,post_body,created_date,updated_date,post.id as writer_id,post.genre,user_id,nickname FROM post LEFT JOIN user ON post.id = user.id ORDER BY post_num DESC LIMIT ${count}`,
+    `SELECT post.post_num,artist,title,post_body,created_date,post.updated_date,post.id as writer_id,post.genre,post.nickname,count(comment.post_num) as comment_count FROM (SELECT post.post_num,artist,title,post_body,created_date,post.updated_date,post.id,post.genre,nickname FROM post LEFT  JOIN user on post.id = user.id) AS post LEFT JOIN comment on post.post_num = comment.post_num GROUP BY post_num ORDER BY post_num DESC LIMIT ${count}`,
     (err, result) => {
       if (err) {
         next(err);
