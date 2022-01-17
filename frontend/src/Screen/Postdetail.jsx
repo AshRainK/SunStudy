@@ -167,6 +167,24 @@ const Postdetail = () => {
       });
   }, [params.post_num]);
 
+  const onDeletepostClick = () => {
+    axios
+    .delete(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`,{
+      post: params.post_num}, { withCredentials: true })
+    .then((response)=>{
+      console.log(response.data.payload);
+    });
+  }  
+  
+  const onModifypostClick = () => {
+    axios
+    .patch(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`,{
+      post: params.post_num}, { withCredentials: true })
+    .then((response)=>{
+      
+    });
+  } 
+
   const onCreateCommentButtonClick = () => {
     axios
     .post(`${process.env.REACT_APP_SERVER_URL}/comment/create`,{
@@ -175,7 +193,6 @@ const Postdetail = () => {
       setComments(response.data.payload)
     });
   }
-
 
   return (
     <Postdetail_container>
@@ -194,8 +211,13 @@ const Postdetail = () => {
           <Music_review_user>{nickname}</Music_review_user>
         </Music_review_info>
         <Posting_func>
-          <Posting_modify>수정</Posting_modify>
-          <Posting_delete>삭제</Posting_delete>
+          <Posting_modify
+            onClick ={onModifypostClick}
+          >수정</Posting_modify>
+          <Posting_delete
+            onClik ={onDeletepostClick}
+            type = "submit"
+          >삭제</Posting_delete>
         </Posting_func>
       </Music_review>
       <Comment_wContainer>
