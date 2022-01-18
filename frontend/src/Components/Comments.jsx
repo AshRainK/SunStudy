@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Comment_container = styled.div`
   display: flex;
@@ -49,18 +51,45 @@ const Delete = styled.button`
   cursor: pointer;
 `;
 
+
 const Comments = ({ nickname,comment,written_date }) => { 
-    return (
+  const params = useParams();
+
+  const onDeletecommentClick = () => {
+    axios
+    .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${params.comment_num}`,{
+      comment: params.comment_num}, { withCredentials: true })
+    .then((response)=>{
+      console.log(response.data.payload);
+    });
+  }  
+
+  const onModifycommentClick = () => {
+    axios
+    .post(`${process.env.REACT_APP_SERVER_URL}/comment/update`,{
+      comment,comment_num: params.comment_num}, { withCredentials: true })
+    .then((response)=>{
+      
+    });
+  } 
+
+  return (
     <Comment_container>
         <Comment_username>{nickname}</Comment_username>
         <Comment_content>{comment}</Comment_content>
         <Comment_date>{written_date}</Comment_date>
         <Comment_func>
-          <Modify>수정</Modify>
-          <Delete>삭제</Delete>
+          <Modify
+            onClick = {onModifycommentClick}
+            type = "submit"
+          >수정</Modify>
+          <Delete
+            type = "submit"
+            onClick = {onDeletecommentClick}
+          >삭제</Delete>
         </Comment_func>
     </Comment_container>
-    );
-  };
+  );
+};
   
   export default Comments;
