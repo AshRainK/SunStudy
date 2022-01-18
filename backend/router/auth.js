@@ -37,7 +37,7 @@ router.get('/login',(req,res)=>{
             res.status(200).send({code : 200, payload : {...req.user, genres:result.map(genre => genre.genre)}});
         })
     } else{
-        res.status(400).send({code : 400, payload : null});
+        res.status(200).send({code : 400, payload : null});
     }
 });
 
