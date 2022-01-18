@@ -231,7 +231,7 @@ const Postdetail = () => {
           onClick = {onCreateCommentButtonClick}>등록</Comment_submit_btn>
       </Comment_wContainer>
       {comments.map((comment, index)=>{
-        return <Comments {...comment} />;
+        return <Comments {...comment} setComments={setComments} />;
       })}
     </Postdetail_container>
   );
