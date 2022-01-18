@@ -135,7 +135,7 @@ const Postdetail = () => {
   const [title, setTitle] = useState();
   const [artist, setArtist] = useState();
   const [body, setBody] = useState();
-  const [genre, setGenre ] = useState();
+  const [genre, setGenre] = useState();
   const [date, setDate] = useState();
   const [nickname, setNickname] = useState();
 
@@ -145,13 +145,14 @@ const Postdetail = () => {
   const onChange = (e) => {
     e.preventDefault();
     setComment(e.target.value);
-  }
+  };
 
   useEffect(() => {
     axios
-    .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
-         const { title, artist, post_body, genre, created_date} = response.data.payload.post
+        const { title, artist, post_body, genre, created_date } =
+          response.data.payload.post;
         setTitle(title);
         setArtist(artist);
         setBody(post_body);
@@ -160,7 +161,7 @@ const Postdetail = () => {
         setNickname(response.data.payload.user.nickname);
       });
 
-      axios
+    axios
       .get(`${process.env.REACT_APP_SERVER_URL}/comment/${params.post_num}`)
       .then((response) => {
         setComments(response.data.payload);
@@ -187,12 +188,19 @@ const Postdetail = () => {
 
   const onCreateCommentButtonClick = () => {
     axios
-    .post(`${process.env.REACT_APP_SERVER_URL}/comment/create`,{
-      comment,post_num: params.post_num}, { withCredentials: true })
-    .then((response)=>{
-      setComments(response.data.payload)
-    });
-  }
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/comment/create`,
+        {
+          comment,
+          post_num: params.post_num,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        setComments(response.data.payload);
+      });
+  };
+
 
   return (
     <Postdetail_container>
@@ -221,16 +229,16 @@ const Postdetail = () => {
         </Posting_func>
       </Music_review>
       <Comment_wContainer>
-        <Commentbox 
-          placeholder="WRITE COMMENT" 
+        <Commentbox
+          placeholder="WRITE COMMENT"
           onChange={onChange}
-          value = {comment}
-          ></Commentbox>
-        <Comment_submit_btn 
-          type="submit"
-          onClick = {onCreateCommentButtonClick}>등록</Comment_submit_btn>
+          value={comment}
+        ></Commentbox>
+        <Comment_submit_btn type="submit" onClick={onCreateCommentButtonClick}>
+          등록
+        </Comment_submit_btn>
       </Comment_wContainer>
-      {comments.map((comment, index)=>{
+      {comments.map((comment, index) => {
         return <Comments {...comment} />;
       })}
     </Postdetail_container>
