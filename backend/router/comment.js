@@ -54,12 +54,16 @@ router.patch("/update", (req, res, next) => {
         next(err);
       }
     });
-    db.query(`SELECT * FROM comment WHERE comment_num = ?`, [comment_num], (err, result) => {
-      if (err) {
-        next(err);
+    db.query(
+      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date ASC`,
+      [req.params.post_num],
+      (err, result) => {
+        if (err) {
+          next(err);
+        }
+        res.status(200).send({ code: 200, payload: result });
       }
-      res.status(201).send({ code: 201, payload: result[0] });
-    });
+    );
     //}
   });
 });
@@ -82,8 +86,17 @@ router.delete("/:comment_num", (req, res, next) => {
       if (err) {
         next(err);
       }
-      res.status(200).send({ code: 200, payload: "삭제가 완료 되었습니다." });
     });
+    db.query(
+      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date ASC`,
+      [req.params.post_num],
+      (err, result) => {
+        if (err) {
+          next(err);
+        }
+        res.status(200).send({ code: 200, payload: result });
+      }
+    );
     //}
   });
 });
