@@ -58,15 +58,22 @@ router.post('/',(req,res,next)=>{
                     next(err);
                 }
                 let user = result[0];
-                req.logIn(user,(err)=>{
+                db.query(`SELECT genre FROM genre WHERE id = ?`,
+                [user.id],
+                (err,genre_result)=>{
                     if(err){
-                        return next(err);
+                        next(err);
                     }
-                    return req.session.save((err)=>{
+                    req.logIn(user,(err)=>{
                         if(err){
                             return next(err);
                         }
-                        res.status(201).send({code : 201, payload : user});
+                        return req.session.save((err)=>{
+                            if(err){
+                                return next(err);
+                            }
+                            res.status(201).send({code : 201, payload : {...user, genres:genre_result.map(genre => genre.genre)}});
+                        })
                     })
                 })
             })

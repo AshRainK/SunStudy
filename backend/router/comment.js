@@ -23,7 +23,7 @@ router.post("/create", (req, res, next) => {
     }
   );
   db.query(
-    `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date ASC`,
+    `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
     [post_num],
     (err, result) => {
       if (err) {
@@ -55,7 +55,7 @@ router.patch("/update", (req, res, next) => {
       }
     });
     db.query(
-      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date ASC`,
+      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
       [req.params.post_num],
       (err, result) => {
         if (err) {
@@ -88,7 +88,7 @@ router.delete("/:comment_num", (req, res, next) => {
       }
     });
     db.query(
-      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date ASC`,
+      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
       [req.params.post_num],
       (err, result) => {
         if (err) {
@@ -104,7 +104,7 @@ router.delete("/:comment_num", (req, res, next) => {
 //READ
 router.get("/:post_num", (req, res, next) => {
   db.query(
-    `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date ASC`,
+    `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
     [req.params.post_num],
     (err, result) => {
       if (err) {
