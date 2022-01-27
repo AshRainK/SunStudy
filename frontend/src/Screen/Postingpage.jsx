@@ -110,7 +110,7 @@ const Postingpage = () => {
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [artist, setArtist] = useState("");
-  const [rate, setRate] = useState(undefined);
+  const [rating, setRate] = useState(undefined);
   const [overview, setOverview] = useState("");
 
   const onChange = (e) => {
@@ -131,7 +131,7 @@ const Postingpage = () => {
         setGenre(e.target.name);
 
         break;
-      case "rate":
+      case "rating":
         var value = e.target.value;
         if (value > 5) value = 5;
         else if (value < 0) value = 1;
@@ -154,7 +154,7 @@ const Postingpage = () => {
       return window.alert("아티스트 정보를 입력해주세요");
     }
 
-    if (rate === undefined) {
+    if (rating === undefined) {
       return window.alert("평점을 입력해주세요");
     }
     if (overview === "") {
@@ -165,7 +165,7 @@ const Postingpage = () => {
 
       .post(
         `${process.env.REACT_APP_SERVER_URL}/post/create`,
-        { title, genre, artist, overview },
+        { title, genre, artist, rating, overview },
         { withCredentials: true }
       )
       .then((response) => {
@@ -262,8 +262,8 @@ const Postingpage = () => {
               min={1}
               max={5}
               step={0.5}
-              name="rate"
-              value={rate}
+              name="rating"
+              value={rating}
               placeholder=" */5.0"
             ></Music_rate>
           </Music_rate_area>
