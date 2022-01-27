@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const CreateAccountBackground = styled.div`
   min-width: 800px;
@@ -23,7 +24,8 @@ const CreateAccountform = styled.div`
 `;
 
 const JoinText = styled.div`
-  font-size: 20px;
+  margin: 25px 0;
+  font-size: 24px;
   font-weight: bolder;
 `;
 
@@ -31,6 +33,7 @@ const UserId = styled.div`
   width: 80%;
   display: flex;
   padding: 10px;
+  margin-bottom: 5px;
   flex-direction: column;
   justify-content: center;
 `;
@@ -40,11 +43,11 @@ const UserIdTextBox = styled.input`
   height: 50px;
   border: 1px solid lightgrey;
   outline: none;
-  margin-top: 3px;
+  margin-top: 10px;
 `;
 
 const UserIdBtn = styled.input`
-  width: 410px;
+  width: 400px;
   height: 50px;
   border: 1px solid lightgrey;
   background-color: black;
@@ -59,7 +62,7 @@ const UserIdBtn = styled.input`
 `;
 
 const UserPassWord = styled.div`
-  padding: 10px;
+  padding: 5px;
 `;
 
 const UserPassWordBox = styled.input`
@@ -67,10 +70,12 @@ const UserPassWordBox = styled.input`
   height: 50px;
   border: 1px solid lightgrey;
   outline: none;
+  margin-top: 5px;
 `;
 
 const UserNickname = styled.div`
   padding: 8px;
+  margin-top: 5px;
 `;
 
 const UserNicknameBox = styled.input`
@@ -78,11 +83,11 @@ const UserNicknameBox = styled.input`
   height: 50px;
   border: 1px solid lightgrey;
   outline: none;
-  margin-top: 3px;
+  margin-top: 10px;
 `;
 
 const UserNicknameBtn = styled.div`
-  width: 410px;
+  width: 400px;
   height: 50px;
   background-color: black;
   color: white;
@@ -101,7 +106,7 @@ const UserNicknameBtn = styled.div`
 `;
 
 const ContentSaveBtn = styled.input`
-  width: 410px;
+  width: 400px;
   height: 50px;
   background-color: black;
   color: white;
@@ -121,6 +126,7 @@ function Join() {
   const [nickname, setNickname] = useState("");
   const [isIdCheckPassed, setIsIdCheckPassed] = useState(false);
   const [isNicknamePassed, setIsNicknamePassed] = useState(false);
+  const history = useHistory();
 
   const onChange = (e) => {
     e.preventDefault();
@@ -205,6 +211,9 @@ function Join() {
     if (password !== passwordCheck) {
       return window.alert("비밀번호를 확인해주세요");
     }
+    if (nickname === "") {
+      return window.alert("닉네임을 입력해주세요");
+    }
 
     if (isIdCheckPassed && isNicknamePassed) {
       axios
@@ -216,6 +225,7 @@ function Join() {
         .then((response) => {
           console.log(response);
           window.alert("회원가입이 완료되었습니다");
+          history.push("/login");
         });
     }
   };
@@ -223,7 +233,7 @@ function Join() {
   return (
     <CreateAccountBackground>
       <CreateAccountform>
-        <JoinText>회원가입</JoinText>
+        <JoinText>Join</JoinText>
         <UserId>
           <div>ID</div>
           <div>
@@ -284,9 +294,7 @@ function Join() {
           onClick={onSubmitJoinButton}
           type="submit"
           value="회원가입"
-        >
-          {/* <a href="#" onClick="alert('회원가입이 완료되었습니다.')"></a> */}
-        </ContentSaveBtn>
+        ></ContentSaveBtn>
       </CreateAccountform>
     </CreateAccountBackground>
   );
