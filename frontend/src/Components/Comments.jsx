@@ -100,25 +100,33 @@ const Comments = (props) => {
 
   const [isuser, setIsuser] = useState(true);
   const [isedit, setIsedit] = useState(true);
-  const params = useParams()
+  const params = useParams();
+
 
   const onDeletecommentClick = () => {
     window.alert("댓글을 삭제하시겠습니까?");
     axios
-    .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${comment_num}`,{
-      comment: comment_num}, { withCredentials: true })
+    .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${comment_num}`, { withCredentials: true })
     .then((response)=>{
-      axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/comment/${params.post_num}`)
-      .then((response) => {
-        setComments(response.data.payload);
-      });
+      console.log(response)
+      setComments(response.data.payload);
     });
   }  
 
   const onModifycommentClick = () => {
     setIsedit(!isedit);
   } 
+
+  const onModifycommentsubmitClick = () => {
+    window.alert("댓글을 수정하시겠습니까?");
+    axios
+    .patch(`${process.env.REACT_APP_SERVER_URL}/comment/update`,
+    { comment_num, comment } ,{ withCredentials: true })
+    .then((response)=>{
+      console.log(response);
+      setComments(response.data.payload);
+    });
+  }
 
   return (
     <Comment_container>
@@ -159,6 +167,7 @@ const Comments = (props) => {
                   <M_button_container>
                     <Comment_modify_btn 
                       type="submit"
+                      onClick = {onModifycommentsubmitClick}
                       >수정</Comment_modify_btn>
                   </M_button_container>
               </Comment_modifyContainer>
