@@ -112,7 +112,7 @@ router.get("/:post_num", (req, res, next) => {
           if (err) {
             next(err);
           }
-          res.status(200).send({ code: 200, payload: { post: result[0], user: user_result[0] } });
+          res.status(200).send({ code: 200, payload: {...result[0], nickname : user_result[0].nickname}});
         }
       );
     }
