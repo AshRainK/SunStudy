@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 const Login_page_container = styled.div`
   display: flex;
@@ -80,7 +80,8 @@ const Signup_btn = styled.button`
 const Login = () => {
   const history = useHistory();
   const onSignupCliked = () => {
-    history.push('/join');
+    window.scrollTo(0, 0);
+    history.push("/join");
   };
   return (
     <Login_page_container>
