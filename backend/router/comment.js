@@ -54,16 +54,20 @@ router.patch("/update", (req, res, next) => {
         next(err);
       }
     });
-    db.query(
-      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
-      [req.params.post_num],
-      (err, result) => {
-        if (err) {
-          next(err);
+    db.query(`SELECT post_num FROM comment WHERE comment_num = ?`,
+    [comment_num],
+    (err,result)=>{
+      db.query(
+        `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
+        [result[0].post_num],
+        (err, result) => {
+          if (err) {
+            next(err);
+          }
+          res.status(200).send({ code: 200, payload: result });
         }
-        res.status(200).send({ code: 200, payload: result });
-      }
-    );
+      );
+    })
     //}
   });
 });
