@@ -86,21 +86,24 @@ router.delete("/:comment_num", (req, res, next) => {
     //if(result[0].commenter !== 201710939){
     //return res.status(400).send({code : 400, payload : "다른 사용자가 작성한 댓글입니다."})
     //} else {
+  db.query(`SELECT post_num FROM comment WHERE comment_num = ?`,
+  [req.params.comment_num],
+  (err,results)=>{
     db.query(`DELETE FROM comment WHERE comment_num = ?`, [req.params.comment_num], (err) => {
       if (err) {
         next(err);
       }
     });
     db.query(
-      `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
-      [req.params.post_num],
-      (err, result) => {
-        if (err) {
-          next(err);
-        }
-        res.status(200).send({ code: 200, payload: result });
+    `SELECT post_num,comment_num,comment,written_date,updated_date,comment.id as commenter,nickname FROM comment LEFT JOIN user on comment.id = user.id WHERE post_num = ? ORDER BY written_date DESC`,
+    [results[0].post_num],
+    (err, result) => {
+      if (err) {
+        next(err);
       }
-    );
+      res.status(200).send({ code: 200, payload: result });
+    });
+  });
     //}
   });
 });
