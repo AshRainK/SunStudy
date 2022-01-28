@@ -133,6 +133,7 @@ function Join() {
     switch (e.target.name) {
       case "id":
         setID(e.target.value);
+        setIsIdCheckPassed(false);
         console.log(id);
         break;
       case "password":
@@ -145,6 +146,7 @@ function Join() {
         break;
       case "nickname":
         setNickname(e.target.value);
+        setIsNicknamePassed(false);
         console.log(nickname);
         break;
     }
@@ -213,6 +215,12 @@ function Join() {
     }
     if (nickname === "") {
       return window.alert("닉네임을 입력해주세요");
+    }
+    if (isNicknamePassed === false) {
+      return window.alert("닉네임 중복 확인을 해주세요.");
+    }
+    if (isIdCheckPassed === false) {
+      return window.alert("아이디 중복 확인을 해주세요.");
     }
 
     if (isIdCheckPassed && isNicknamePassed) {

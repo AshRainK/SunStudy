@@ -152,13 +152,13 @@ const Postdetail = () => {
       .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
         const { title, artist, post_body, genre, created_date } =
-          response.data.payload.post;
+          response.data.payload;
         setTitle(title);
         setArtist(artist);
         setBody(post_body);
         setGenre(genre);
         setDate(created_date);
-        setNickname(response.data.payload.user.nickname);
+        setNickname(response.data.payload.nickname);
       });
 
     axios
@@ -170,21 +170,29 @@ const Postdetail = () => {
 
   const onDeletepostClick = () => {
     axios
-    .delete(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`,{
-      post: params.post_num}, { withCredentials: true })
-    .then((response)=>{
-      console.log(response.data.payload);
-    });
-  }  
-  
+      .delete(
+        `${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`,
+        {
+          post: params.post_num,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response.data.payload);
+      });
+  };
+
   const onModifypostClick = () => {
     axios
-    .patch(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`,{
-      post: params.post_num}, { withCredentials: true })
-    .then((response)=>{
-      
-    });
-  } 
+      .patch(
+        `${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`,
+        {
+          post: params.post_num,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {});
+  };
 
   const onCreateCommentButtonClick = () => {
     axios
@@ -200,7 +208,6 @@ const Postdetail = () => {
         setComments(response.data.payload);
       });
   };
-
 
   return (
     <Postdetail_container>
@@ -219,13 +226,10 @@ const Postdetail = () => {
           <Music_review_user>{nickname}</Music_review_user>
         </Music_review_info>
         <Posting_func>
-          <Posting_modify
-            onClick ={onModifypostClick}
-          >수정</Posting_modify>
-          <Posting_delete
-            onClik ={onDeletepostClick}
-            type = "submit"
-          >삭제</Posting_delete>
+          <Posting_modify onClick={onModifypostClick}>수정</Posting_modify>
+          <Posting_delete onClik={onDeletepostClick} type="submit">
+            삭제
+          </Posting_delete>
         </Posting_func>
       </Music_review>
       <Comment_wContainer>
@@ -238,7 +242,7 @@ const Postdetail = () => {
           등록
         </Comment_submit_btn>
       </Comment_wContainer>
-      {comments.map((comment, index)=>{
+      {comments.map((comment, index) => {
         return <Comments {...comment} setComments={setComments} />;
       })}
     </Postdetail_container>
