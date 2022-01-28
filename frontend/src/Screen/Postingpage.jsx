@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const Posting_page = styled.div`
   background-color: #f5f5f5;
@@ -112,30 +113,30 @@ const Postingpage = () => {
   const [artist, setArtist] = useState("");
   const [rating, setRate] = useState(undefined);
   const [overview, setOverview] = useState("");
+  const history = useHistory();
 
   const onChange = (e) => {
     switch (e.target.name) {
       case "title":
-        setTitle(e.target.name);
+        setTitle(e.target.value);
 
         break;
       case "artist":
-        setArtist(e.target.name);
+        setArtist(e.target.value);
 
         break;
       case "overview":
-        setOverview(e.target.name);
+        setOverview(e.target.value);
 
         break;
       case "genre":
-        setGenre(e.target.name);
+        setGenre(e.target.value);
 
         break;
       case "rating":
         var value = e.target.value;
         if (value > 5) value = 5;
         else if (value < 0) value = 1;
-        console.log(value);
         setRate(value);
 
         break;
@@ -165,11 +166,12 @@ const Postingpage = () => {
 
       .post(
         `${process.env.REACT_APP_SERVER_URL}/post/create`,
-        { title, genre, artist, rating, overview },
+        { title, genre, artist, rating, post_body: overview },
         { withCredentials: true }
       )
       .then((response) => {
         window.alert("글 작성이 정상적으로 처리되었습니다");
+        history.push(`/postdetail/${response.data.payload.post_num}`);
       });
   };
 
