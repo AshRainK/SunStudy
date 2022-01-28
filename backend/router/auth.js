@@ -10,7 +10,7 @@ router.post('/login',(req,res,next)=>{
             return next(err);
         }
         if(!user){
-            return res.status(400).send({code : 400, payload : info})
+            return res.status(200).send({code : 200, payload : info})
         }
         req.logIn(user,(err)=>{
             if(err){
@@ -37,7 +37,7 @@ router.get('/login',(req,res)=>{
             res.status(200).send({code : 200, payload : {...req.user, genres:result.map(genre => genre.genre)}});
         })
     } else{
-        res.status(200).send({code : 400, payload : null});
+        res.status(200).send({code : 200, payload : null});
     }
 });
 
