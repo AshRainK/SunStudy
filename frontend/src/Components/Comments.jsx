@@ -82,7 +82,17 @@ const M_button_container = styled.div`
 const Comment_modify_btn = styled.button`
   width: 60px;
   height: 25px;
-  margin: 10px 0;
+  margin: 10px 5px;
+  border: none;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+`;
+
+const Comment_modify_cancel_btn = styled.button`
+  width: 60px;
+  height: 25px;
+  margin: 10px 5px;
   border: none;
   color: white;
   background-color: black;
@@ -100,15 +110,18 @@ const Comments = (props) => {
 
   const [isuser, setIsuser] = useState(true);
   const [isedit, setIsedit] = useState(true);
-  const params = useParams();
+  const [contents, setContents] = useState(comment);
 
+  const onChange = (e) => {
+    e.preventDefault();
+    setContents(e.target.value);
+  };
 
   const onDeletecommentClick = () => {
     window.alert("댓글을 삭제하시겠습니까?");
     axios
     .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${comment_num}`, { withCredentials: true })
     .then((response)=>{
-      console.log(response)
       setComments(response.data.payload);
     });
   }  
@@ -121,11 +134,16 @@ const Comments = (props) => {
     window.alert("댓글을 수정하시겠습니까?");
     axios
     .patch(`${process.env.REACT_APP_SERVER_URL}/comment/update`,
-    { comment_num, comment } ,{ withCredentials: true })
+    { comment_num, comment: contents } ,{ withCredentials: true })
     .then((response)=>{
-      console.log(response);
       setComments(response.data.payload);
+      setIsedit(true);
     });
+  }
+
+  const onModifycommentcancelClick = () => {
+    window.alert("댓글을 수정을 취소하시겠습니까?");
+    setIsedit(true);
   }
 
   return (
@@ -161,14 +179,19 @@ const Comments = (props) => {
               <Comment_modifyContainer>
                 <Modifycommentbox
                     type= "text"
-                    defaultValue = {comment}
+                    value={contents}
                     name = "comment"
+                    onChange={onChange}
                     ></Modifycommentbox>
                   <M_button_container>
                     <Comment_modify_btn 
                       type="submit"
                       onClick = {onModifycommentsubmitClick}
-                      >수정</Comment_modify_btn>
+                    >수정</Comment_modify_btn>
+                    <Comment_modify_cancel_btn 
+                      type="button"
+                      onClick = {onModifycommentcancelClick}
+                    >취소</Comment_modify_cancel_btn>
                   </M_button_container>
               </Comment_modifyContainer>
             </Comment_container>          </>
