@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Components/Header";
 import Login from "./Screen/Login";
 import Join from "./Screen/Join";
@@ -11,6 +11,8 @@ import Sidebar from "./Components/Sidebar";
 import Genre from "./Screen/Genre";
 import Mypage from "./Screen/Mypage";
 import MypageEdit from "./Screen/MypageEdit";
+import axios from "axios";
+import store from "./store";
 
 
 const Body = styled.div`
@@ -39,6 +41,13 @@ function App() {
   const onSidebarToggleButtonClicked = () => {
     setIsSidebarOpened(!isSidebarOpened);
   };
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {withCredentials: true})
+    .then((response)=> {
+      store.dispatch({type: "LOGIN", user: response.data.payload});
+    });
+  }, []);
 
   return (
     <div className="App">
