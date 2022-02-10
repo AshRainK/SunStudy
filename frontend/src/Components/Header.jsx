@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import store from '../store';
+import axios from 'axios';
 
 const Header_container = styled.div`
   display: flex;
@@ -86,6 +88,10 @@ const Search_btn = styled.button`
 
 const Header = ({ onSidebarToggleButtonClicked }) => {
   const history = useHistory();
+  const [userData, setUserData] = useState(store.getState("user").user);
+  store.subscribe(()=>{
+    setUserData(store.getState("user").user);
+  });
 
   const onLoginbtnCliked = () => {
     history.push('/login');
@@ -93,6 +99,11 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
 
   const onLogoCliked = () => {
     history.push('/');
+  };
+
+  const onLogoutbtnCliked = () => {
+    axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, { withCredentials: true })
+    .then((response) => store.dispatch({type: "LOGOUT"}));
   };
 
   return (
@@ -109,7 +120,12 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
             </Search_btn>
           </Search>
           <Login_container>
-            <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
+            {userData === null ? (
+              <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
+            )
+            :(
+              <button onClick={onLogoutbtnCliked}>logout</button>
+            )}
           </Login_container>
         </Search_login_container>
       </Header_container>

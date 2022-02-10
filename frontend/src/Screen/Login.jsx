@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import store from "../store";
 
 const Login_page_container = styled.div`
   display: flex;
@@ -83,13 +85,33 @@ const Login = () => {
     window.scrollTo(0, 0);
     history.push("/join");
   };
+
+  const onClickLoginBtn = () => {
+    const id  = document.getElementById("inputID").value;
+    const password = document.getElementById("inputPWD").value;
+
+    axios 
+    .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {id, password}, {withCredentials: true})
+    .then((response)=> {
+      store.dispatch({type: "LOGIN", user: response.data.payload});
+      window.alert("정상적으로 로그인이 되었습니다.")
+      history.push({pathname: "/"});
+    });
+  };
+
+  useEffect(()=> {
+    if(store.getState("user").user!== null){
+      history.push({pathname: "/"});
+    }
+  }, []);
+
   return (
     <Login_page_container>
       <Login_text>Login</Login_text>
       <Login_form_container>
-        <Input_ID type="text" placeholder="아이디 입력" />
-        <Input_PW type="text" placeholder="패스워드 입력" />
-        <Login_btn>로그인</Login_btn>
+        <Input_ID type="text" id="inputID" placeholder="아이디 입력" />
+        <Input_PW type="text" id="inputPWD" placeholder="패스워드 입력" />
+        <Login_btn onClick={onClickLoginBtn}>로그인</Login_btn>
       </Login_form_container>
       <Signup_btn onClick={onSignupCliked}>회원가입</Signup_btn>
     </Login_page_container>
