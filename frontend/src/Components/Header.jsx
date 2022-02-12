@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
-import store from '../store';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import store from "../store";
+import axios from "axios";
+import Search from "../Screen/Search";
 
 const Header_container = styled.div`
   display: flex;
@@ -31,7 +32,7 @@ const Login_textb = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
 `;
 
@@ -55,11 +56,11 @@ const Logo_title = styled.div`
   font-size: 25px;
   font-weight: 600;
   color: black;
-  font-family: 'Rock Salt', cursive;
+  font-family: "Rock Salt", cursive;
   line-height: 1.35em;
 `;
 
-const Search = styled.div`
+const Search_area = styled.div`
   display: flex;
   margin-right: 70px;
 `;
@@ -89,41 +90,51 @@ const Search_btn = styled.button`
 const Header = ({ onSidebarToggleButtonClicked }) => {
   const history = useHistory();
   const [userData, setUserData] = useState(store.getState("user").user);
-  store.subscribe(()=>{
+  store.subscribe(() => {
     setUserData(store.getState("user").user);
   });
 
   const onLoginbtnCliked = () => {
-    history.push('/login');
+    history.push("/login");
   };
 
   const onLogoCliked = () => {
-    history.push('/');
+    history.push("/");
   };
 
   const onLogoutbtnCliked = () => {
-    axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, { withCredentials: true })
-    .then((response) => store.dispatch({type: "LOGOUT"}));
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
+        withCredentials: true,
+      })
+      .then((response) => store.dispatch({ type: "LOGOUT" }));
+  };
+
+  const onSearchbtnClicked = () => {
+    history.push(`/search`);
   };
 
   return (
     <div>
       <Header_container>
         <Sidebar_button_toggle>
-          <i style={{ color: 'white', cursor: 'pointer' }} class="fas fa-bars" onClick={onSidebarToggleButtonClicked}></i>
+          <i
+            style={{ color: "white", cursor: "pointer" }}
+            class="fas fa-bars"
+            onClick={onSidebarToggleButtonClicked}
+          ></i>
         </Sidebar_button_toggle>
         <Search_login_container>
-          <Search>
+          <Search_area>
             <Search_bar type="text" placeholder="Search" />
-            <Search_btn type="submit">
+            <Search_btn onClick={onSearchbtnClicked} type="submit">
               <i class="fas fa-search"></i>
             </Search_btn>
-          </Search>
+          </Search_area>
           <Login_container>
             {userData === null ? (
               <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
-            )
-            :(
+            ) : (
               <button onClick={onLogoutbtnCliked}>logout</button>
             )}
           </Login_container>

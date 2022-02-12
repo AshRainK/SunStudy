@@ -13,18 +13,18 @@ const Body = styled.div`
   flex-wrap: wrap;
 `;
 
-const Genre = () => {
+const Search = () => {
   const onSubmit = () => {};
   const params = useParams();
-  console.log(params);
   const [postings, setPostings] = useState([]);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/search/?genre=${params.genre}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/search/?arti=${params.keyword}`)
       .then((response) => {
         setPostings(response.data.payload);
       });
-  }, [params.genre]);
+  }, [params.keyword]);
+
   return (
     <Body>
       {postings.map((posting, index) => {
@@ -34,4 +34,4 @@ const Genre = () => {
   );
 };
 
-export default Genre;
+export default Search;

@@ -13,7 +13,7 @@ import Mypage from "./Screen/Mypage";
 import MypageEdit from "./Screen/MypageEdit";
 import axios from "axios";
 import store from "./store";
-
+import Search from "./Screen/Search";
 
 const Body = styled.div`
   min-width: 1200px;
@@ -43,10 +43,13 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {withCredentials: true})
-    .then((response)=> {
-      store.dispatch({type: "LOGIN", user: response.data.payload});
-    });
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        store.dispatch({ type: "LOGIN", user: response.data.payload });
+      });
   }, []);
 
   return (
@@ -84,6 +87,9 @@ function App() {
             </Route>
             <Route exact path="/mypageedit">
               <MypageEdit />
+            </Route>
+            <Route exact path="/search/:keyword">
+              <Search />
             </Route>
           </Main>
         </Body>
