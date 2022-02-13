@@ -16,12 +16,28 @@ const Body = styled.div`
 const Search = () => {
   const onSubmit = () => {};
   const params = useParams();
+  console.log(params);
   const [postings, setPostings] = useState([]);
+
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/search/?arti=${params.keyword}`)
-      .then((response) => {
-        setPostings(response.data.payload);
+      .get(`${process.env.REACT_APP_SERVER_URL}/search/?tl=${params.keyword}`)
+      .then((response1) => {
+        setPostings(response1.data.payload);
+        axios
+          .get(
+            `${process.env.REACT_APP_SERVER_URL}/search/?arti=${params.keyword}`
+          )
+          .then((response2) => {
+            setPostings([...postings, ...response2.data.payload]);
+            axios
+              .get(
+                `${process.env.REACT_APP_SERVER_URL}/search/?body=${params.keyword}`
+              )
+              .then((response3) => {
+                setPostings([...postings, ...response3.data.payload]);
+              });
+          });
       });
   }, [params.keyword]);
 

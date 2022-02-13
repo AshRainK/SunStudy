@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import store from "../store";
 import axios from "axios";
 import Search from "../Screen/Search";
+import { useParams } from "react-router";
 
 const Header_container = styled.div`
   display: flex;
@@ -26,33 +27,13 @@ const Login_container = styled.div`
   display: flex;
 `;
 
-const Login_btn = styled.button`
+const Login_textb = styled.button`
   font-size: 15px;
   color: white;
   background-color: transparent;
   border: none;
   cursor: pointer;
   font-family: "Noto Sans KR", sans-serif;
-  font-weight: 500;
-`;
-
-const Logout_btn = styled.button`
-  font-size: 15px;
-  color: white;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 500;
-`;
-
-const Mypage_btn = styled.button`
-  font-size: 15px;
-  color: white;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 500;
 `;
 
@@ -107,12 +88,20 @@ const Search_btn = styled.button`
   cursor: pointer;
 `;
 
-const Header = ({ onSidebarToggleButtonClicked }) => {
+const Header = (onSidebarToggleButtonClicked) => {
   const history = useHistory();
+  const [keyword, setKeyword] = useState();
   const [userData, setUserData] = useState(store.getState("user").user);
+  const params = useParams();
   store.subscribe(() => {
     setUserData(store.getState("user").user);
   });
+
+  const onChange = (e) => {
+    e.preventDefault();
+    setKeyword(e.target.value);
+    console.log(keyword);
+  };
 
   const onLoginbtnCliked = () => {
     history.push("/login");
@@ -127,16 +116,12 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
       .get(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
         withCredentials: true,
       })
-      .then((response) => 
-      { 
-        store.dispatch({type: "LOGOUT"});
-        history.push({pathname: "/"});
-        window.alert("로그아웃 되었습니다");
-      });
+      .then((response) => store.dispatch({ type: "LOGOUT" }));
   };
 
-  const onSearchbtnClicked = () => {
-    history.push(`/search`);
+  const onSearchbtnClicked = (e) => {
+    e.preventDefault();
+    history.push(`/search/${keyword}`);
   };
 
   return (
@@ -151,16 +136,16 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
         </Sidebar_button_toggle>
         <Search_login_container>
           <Search_area>
-            <Search_bar type="text" placeholder="Search" />
+            <Search_bar onChange={onChange} type="text" placeholder="Search" />
             <Search_btn onClick={onSearchbtnClicked} type="submit">
               <i class="fas fa-search"></i>
             </Search_btn>
           </Search_area>
           <Login_container>
             {userData === null ? (
-              <Login_btn onClick={onLoginbtnCliked}>Login</Login_btn>
+              <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
             ) : (
-              <Logout_btn onClick={onLogoutbtnCliked}>Logout</Logout_btn>
+              <button onClick={onLogoutbtnCliked}>logout</button>
             )}
           </Login_container>
         </Search_login_container>
