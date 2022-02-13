@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -81,21 +81,39 @@ const Signup_btn = styled.button`
 
 const Login = () => {
   const history = useHistory();
+  const [id, setId] = useState();
+  const [password, setPassword] = useState();
+
   const onSignupCliked = () => {
     window.scrollTo(0, 0);
     history.push("/join");
   };
 
+
+
+  const onChange = (e) => {
+    const elementId = e.target.id;
+    const { value } = e.target;
+    if (elementId === 'id') setId(value);
+    else if (elementId === 'password') setPassword(value);
+  };
+
   const onClickLoginBtn = () => {
-    const id  = document.getElementById("inputID").value;
-    const password = document.getElementById("inputPWD").value;
+    const id  = document.getElementById("id").value;
+    const password = document.getElementById("password").value;
 
     axios 
     .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {id, password}, {withCredentials: true})
     .then((response)=> {
+      if(response.data.payload.message){
+        window.alert(response.data.payload.message);
+        console.log(response);
+      }
+      else{
       store.dispatch({type: "LOGIN", user: response.data.payload});
       window.alert("정상적으로 로그인이 되었습니다.")
       history.push({pathname: "/"});
+      }
     });
   };
 
@@ -109,8 +127,8 @@ const Login = () => {
     <Login_page_container>
       <Login_text>Login</Login_text>
       <Login_form_container>
-        <Input_ID type="text" id="inputID" placeholder="아이디 입력" />
-        <Input_PW type="text" id="inputPWD" placeholder="패스워드 입력" />
+        <Input_ID  onChange={onChange} type="text" id="id" value={id} placeholder="아이디 입력"/>
+        <Input_PW onChange={onChange} type="text" id="password" value={password} placeholder="패스워드 입력"/>
         <Login_btn onClick={onClickLoginBtn}>로그인</Login_btn>
       </Login_form_container>
       <Signup_btn onClick={onSignupCliked}>회원가입</Signup_btn>
