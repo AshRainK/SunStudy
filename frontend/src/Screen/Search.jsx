@@ -29,13 +29,19 @@ const Search = () => {
             `${process.env.REACT_APP_SERVER_URL}/search/?arti=${params.keyword}`
           )
           .then((response2) => {
-            setPostings([...postings, ...response2.data.payload]);
+            setPostings((postings) => [...postings, ...response2.data.payload]);
             axios
               .get(
                 `${process.env.REACT_APP_SERVER_URL}/search/?body=${params.keyword}`
               )
               .then((response3) => {
-                setPostings([...postings, ...response3.data.payload]);
+                setPostings((postings) => [
+                  ...postings,
+                  ...response3.data.payload,
+                ]);
+                setPostings((postings) =>
+                  [...new Set(postings.map(JSON.stringify))].map(JSON.parse)
+                );
               });
           });
       });
