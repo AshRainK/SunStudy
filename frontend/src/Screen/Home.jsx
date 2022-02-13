@@ -26,7 +26,6 @@ const Home = () => {
   return (
     <Body>
       {postings.map((posting, index) => {
-        console.log(posting);
         return <PostingCard {...posting} />;
       })}
     </Body>
