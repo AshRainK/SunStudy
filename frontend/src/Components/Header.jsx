@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useHistory,  Link } from "react-router-dom";
 import store from "../store";
 import axios from "axios";
 import Search from "../Screen/Search";
-import { useParams } from "react-router";
 
 const Header_container = styled.div`
   display: flex;
@@ -27,13 +26,33 @@ const Login_container = styled.div`
   display: flex;
 `;
 
-const Login_textb = styled.button`
+const Login_btn = styled.button`
   font-size: 15px;
   color: white;
   background-color: transparent;
   border: none;
   cursor: pointer;
   font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+`;
+
+const Logout_btn = styled.button`
+  font-size: 15px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+`;
+
+const Mypage_btn = styled.button`
+  font-size: 15px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 500;
 `;
 
@@ -92,10 +111,10 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
   const history = useHistory();
   const [keyword, setKeyword] = useState();
   const [userData, setUserData] = useState(store.getState("user").user);
-  const params = useParams();
-  store.subscribe(() => {
+
+   store.subscribe(() => {
     setUserData(store.getState("user").user);
-  });
+   });
 
   const onChange = (e) => {
     e.preventDefault();
@@ -116,7 +135,11 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
       .get(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
         withCredentials: true,
       })
-      .then((response) => store.dispatch({ type: "LOGOUT" }));
+      .then((response) => 
+      { 
+        store.dispatch({type: "LOGOUT"});
+        window.alert("로그아웃 되었습니다");
+      });
   };
 
   const onSearchbtnClicked = (e) => {
@@ -143,9 +166,9 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
           </Search_area>
           <Login_container>
             {userData === null ? (
-              <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
+              <Login_btn onClick={onLoginbtnCliked}>Login</Login_btn>
             ) : (
-              <button onClick={onLogoutbtnCliked}>logout</button>
+              <Logout_btn onClick={onLogoutbtnCliked}>logout</Logout_btn>
             )}
           </Login_container>
         </Search_login_container>

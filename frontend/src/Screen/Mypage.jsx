@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import axios from "axios";
+import store from "../store";
 
 const Mypage_container = styled.div`
     display: flex;
@@ -94,18 +95,16 @@ const Mypage = () => {
       history.push('/mypageedit');
     };
 
+      useEffect(()=> {
+    if(store.getState("user").user === null){
+      history.push({pathname: "/"});
+    }
+  }, []);
+
     console.log();
     const [nickname, setNickname] = useState();
     const [aboutme, setAboutme] = useState([]);
     
-    useEffect(() => {
-      axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/mypage/`)
-        .then((response) => {
-            console.log(response.data.payload);
-        });
-    }, []);
-  
 
     return(
         <Mypage_container>

@@ -81,15 +81,13 @@ const Signup_btn = styled.button`
 
 const Login = () => {
   const history = useHistory();
-  const [id, setId] = useState();
-  const [password, setPassword] = useState();
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSignupCliked = () => {
     window.scrollTo(0, 0);
     history.push("/join");
   };
-
-
 
   const onChange = (e) => {
     const elementId = e.target.id;
@@ -99,26 +97,22 @@ const Login = () => {
   };
 
   const onClickLoginBtn = () => {
-    const id  = document.getElementById("id").value;
-    const password = document.getElementById("password").value;
-
     axios 
     .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {id, password}, {withCredentials: true})
     .then((response)=> {
       if(response.data.payload.message){
         window.alert(response.data.payload.message);
-        console.log(response);
       }
       else{
       store.dispatch({type: "LOGIN", user: response.data.payload});
       window.alert("정상적으로 로그인이 되었습니다.")
-      history.push({pathname: "/"});
+      history.push({pathname: '/'});
       }
     });
   };
 
   useEffect(()=> {
-    if(store.getState("user").user!== null){
+    if(store.getState("user").user !== null){
       history.push({pathname: "/"});
     }
   }, []);
