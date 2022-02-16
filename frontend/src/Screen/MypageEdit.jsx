@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from 'react-router-dom';
 import styled from "styled-components";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import store from "../store";
 
 const EditMypage_container = styled.div`
     display: flex;
@@ -143,6 +144,13 @@ const Line = styled.div`
 `;
 
 const MypageEdit = () => {
+    const history = useHistory();
+
+    useEffect(()=> {
+        if(store.getState("user").user === null){
+          history.push({pathname: "/"});
+        }
+      }, []);
 
     return(
         <EditMypage_container>

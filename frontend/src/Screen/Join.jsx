@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import store from "../store";
 
 const CreateAccountBackground = styled.div`
   min-width: 800px;
@@ -127,6 +128,12 @@ function Join() {
   const [isIdCheckPassed, setIsIdCheckPassed] = useState(false);
   const [isNicknamePassed, setIsNicknamePassed] = useState(false);
   const history = useHistory();
+
+  useEffect(()=> {
+    if(store.getState("user").user !== null){
+      history.push({pathname: "/"});
+    }
+  }, []);
 
   const onChange = (e) => {
     e.preventDefault();

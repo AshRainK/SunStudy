@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import store from "../store";
 
 const Posting_page = styled.div`
   background-color: #f5f5f5;
@@ -114,6 +115,12 @@ const Postingpage = () => {
   const [rating, setRate] = useState(undefined);
   const [overview, setOverview] = useState("");
   const history = useHistory();
+
+  useEffect(()=> {
+    if(store.getState("user").user === null){
+      history.push({pathname: "/"});
+    }
+  }, []);
 
   const onChange = (e) => {
     switch (e.target.name) {

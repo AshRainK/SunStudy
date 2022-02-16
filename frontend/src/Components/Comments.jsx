@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import store from "../store";
 
 const Comment_container = styled.div`
   display: flex;
@@ -105,9 +105,11 @@ const Comments = (props) => {
     comment,
     comment_num,
     written_date,
-    setComments
+    setComments,
+    commenter,
   } = props;
 
+  const [user, setUser] = useState(store.getState("user").user);
   const [isuser, setIsuser] = useState(true);
   const [isedit, setIsedit] = useState(true);
   const [contents, setContents] = useState(comment);
@@ -155,6 +157,22 @@ const Comments = (props) => {
             <>
               <Comment_content>{comment}</Comment_content>
               <Comment_date>{written_date}</Comment_date>
+              {commenter === user ? (
+                <>
+                 <Comment_func>
+                 <Modify
+                   onClick = {onModifycommentClick}
+                   type = "submit"
+                 >수정</Modify>
+                 <Delete
+                   type = "submit"
+                   onClick = {onDeletecommentClick}
+                 >삭제</Delete>
+               </Comment_func>
+              </>
+              ):(
+                <></>
+              )}
               <Comment_func>
                 <Modify
                   onClick = {onModifycommentClick}
