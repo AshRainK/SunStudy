@@ -157,7 +157,7 @@ const Comments = (props) => {
             <>
               <Comment_content>{comment}</Comment_content>
               <Comment_date>{written_date}</Comment_date>
-              {commenter === user ? (
+              {commenter === user?.id ? (
                 <>
                  <Comment_func>
                  <Modify
@@ -173,16 +173,7 @@ const Comments = (props) => {
               ):(
                 <></>
               )}
-              <Comment_func>
-                <Modify
-                  onClick = {onModifycommentClick}
-                  type = "submit"
-                >수정</Modify>
-                <Delete
-                  type = "submit"
-                  onClick = {onDeletecommentClick}
-                >삭제</Delete>
-              </Comment_func>
+
             </>
           ) : (
             <>

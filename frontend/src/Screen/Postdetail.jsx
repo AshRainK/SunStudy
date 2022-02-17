@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Comments from "../Components/Comments";
+import store from "../store";
 
 const Postdetail_container = styled.div`
   display: flex;
@@ -142,12 +143,25 @@ const Postdetail = () => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
 
+  const [userData, setUserData] = useState(null);
+
   const onChange = (e) => {
     e.preventDefault();
     setComment(e.target.value);
   };
 
+  useEffect(()=> {
+    let user = store.getState("user");
+    if(user === null){
+      setUserData(null);
+    }
+    else{
+      setUserData(user.user);
+    }
+  },[]);
+
   useEffect(() => {
+
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
