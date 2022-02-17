@@ -9,15 +9,15 @@ export default createStore((state, action) => {
         return { ...state, user: action.user};
     }
 
-    if(state === "LOGOUT"){
+    if(action.type === "LOGOUT"){
         return {...state, user: null};
     }
 
-    if(state === "USER_UPDATED"){
+    if(action.type === "USER_UPDATED"){
         return {...state, user: action.user};
     }
 
-    if(state === "USER_DELETE"){
+    if(action.type === "USER_DELETE"){
         return {...state, user: null};
     }
 }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

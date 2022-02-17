@@ -112,8 +112,16 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
   const [keyword, setKeyword] = useState();
   const [userData, setUserData] = useState(store.getState("user").user);
 
+  
    store.subscribe(() => {
-    setUserData(store.getState("user").user);
+     let user = store.getState("user");
+     if(user === null)
+     {
+       setUserData(null);
+     }
+     else{
+      setUserData(store.getState("user").user);
+     }
    });
 
   const onChange = (e) => {
