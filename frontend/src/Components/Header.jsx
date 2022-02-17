@@ -107,7 +107,7 @@ const Search_btn = styled.button`
   cursor: pointer;
 `;
 
-const Header = (onSidebarToggleButtonClicked) => {
+const Header = ({ onSidebarToggleButtonClicked }) => {
   const history = useHistory();
   const [keyword, setKeyword] = useState();
   const [userData, setUserData] = useState(store.getState("user").user);
