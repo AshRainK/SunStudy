@@ -116,9 +116,9 @@ const Postingpage = () => {
   const [overview, setOverview] = useState("");
   const history = useHistory();
 
-  useEffect(()=> {
-    if(store.getState("user").user === null){
-      history.push({pathname: "/"});
+  useEffect(() => {
+    if (store.getState("user").user === null) {
+      history.push({ pathname: "/" });
     }
   }, []);
 
@@ -231,7 +231,7 @@ const Postingpage = () => {
               onChange={onChange}
               type="radio"
               id="cb5"
-              value="HIPHOP"
+              value="HIP-HOP"
               name="genre"
             />
             Hiphop
