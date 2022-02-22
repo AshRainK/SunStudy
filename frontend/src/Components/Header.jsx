@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory,  Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import store from "../store";
 import axios from "axios";
 import Search from "../Screen/Search";
@@ -21,6 +21,17 @@ const Search_login_container = styled.div`
   display: flex;
   margin-right: 30px;
 `;
+
+const Mypage_container = styled.div`
+  margin-right: 20px;
+  display: flex;
+`;
+
+const New_posting_container = styled.div`
+  margin-right: 20px;
+  display: flex;
+`;
+
 const Login_container = styled.div`
   margin-right: 20px;
   display: flex;
@@ -42,7 +53,7 @@ const Logout_btn = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
 `;
 
@@ -52,7 +63,7 @@ const Mypage_btn = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
 `;
 
@@ -82,7 +93,7 @@ const Logo_title = styled.div`
 
 const Search_area = styled.div`
   display: flex;
-  margin-right: 70px;
+  margin-right: 10px;
 `;
 
 const Search_bar = styled.input`
@@ -112,17 +123,14 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
   const [keyword, setKeyword] = useState();
   const [userData, setUserData] = useState(store.getState("user").user);
 
-  
-   store.subscribe(() => {
-     let user = store.getState("user");
-     if(user === null)
-     {
-       setUserData(null);
-     }
-     else{
+  store.subscribe(() => {
+    let user = store.getState("user");
+    if (user === null) {
+      setUserData(null);
+    } else {
       setUserData(store.getState("user").user);
-     }
-   });
+    }
+  });
 
   const onChange = (e) => {
     e.preventDefault();
@@ -134,6 +142,14 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
     history.push("/login");
   };
 
+  const onMypageCliked = () => {
+    history.push("/mypage");
+  };
+
+  const onNewpostingCliked = () => {
+    history.push("/postpage");
+  };
+
   const onLogoCliked = () => {
     history.push("/");
   };
@@ -143,9 +159,8 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
       .get(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
         withCredentials: true,
       })
-      .then((response) => 
-      { 
-        store.dispatch({type: "LOGOUT"});
+      .then((response) => {
+        store.dispatch({ type: "LOGOUT" });
         window.alert("로그아웃 되었습니다");
       });
   };
@@ -172,11 +187,25 @@ const Header = ({ onSidebarToggleButtonClicked }) => {
               <i class="fas fa-search"></i>
             </Search_btn>
           </Search_area>
+          <Mypage_container>
+            {userData === null ? (
+              <></>
+            ) : (
+              <Logout_btn onClick={onMypageCliked}>My Page</Logout_btn>
+            )}
+          </Mypage_container>
+          <New_posting_container>
+            {userData === null ? (
+              <></>
+            ) : (
+              <Logout_btn onClick={onNewpostingCliked}>New Posting</Logout_btn>
+            )}
+          </New_posting_container>
           <Login_container>
             {userData === null ? (
               <Login_btn onClick={onLoginbtnCliked}>Login</Login_btn>
             ) : (
-              <Logout_btn onClick={onLogoutbtnCliked}>logout</Logout_btn>
+              <Logout_btn onClick={onLogoutbtnCliked}>Logout</Logout_btn>
             )}
           </Login_container>
         </Search_login_container>
