@@ -150,18 +150,16 @@ const Postdetail = () => {
     setComment(e.target.value);
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     let user = store.getState("user");
-    if(user === null){
+    if (user === null) {
       setUserData(null);
-    }
-    else{
+    } else {
       setUserData(user.user);
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
-
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
@@ -173,6 +171,7 @@ const Postdetail = () => {
         setGenre(genre);
         setDate(created_date);
         setNickname(response.data.payload.nickname);
+        console.log(response);
       });
 
     axios
