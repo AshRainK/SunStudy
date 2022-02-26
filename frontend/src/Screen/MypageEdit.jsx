@@ -223,20 +223,29 @@ const Edit_profilebtn = styled.div`
   margin-top: 10px;
 `;
 
-const MypageEdit = () => {
+const MypageEdit = (props) => {
   const history = useHistory();
   const params = useParams();
   const [nickname, setNickname] = useState("");
+  const [about_me, setAboutme] = useState("");
   const [id, setID] = useState("");
 
   useEffect(() => {
     if (store.getState("user").user === null) {
       history.push({ pathname: "/" });
     }
-    axios.get(`${process.env.REACT_APP_SERVER_URL}/mypage`).then((response) => {
-      console.log(response.data.payload);
-      setNickname(nickname);
-    });
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/mypage`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        // const { about_me, id, nickname, password, user_id } =
+        //   response.data.payload;
+        console.log(response.data.payload);
+        setNickname(nickname);
+        setAboutme(about_me);
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   return (
@@ -253,7 +262,7 @@ const MypageEdit = () => {
           <Nickname_container>
             Nickname
             <Line></Line>
-            <Nickname placeholder={nickname}></Nickname>
+            <Nickname defaultValue={nickname}></Nickname>
             <NicknameC_btn>confirm</NicknameC_btn>
           </Nickname_container>
           <Password_container>
