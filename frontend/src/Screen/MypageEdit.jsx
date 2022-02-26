@@ -239,8 +239,8 @@ const MypageEdit = (props) => {
         withCredentials: true,
       })
       .then((response) => {
-        // const { about_me, id, nickname, password, user_id } =
-        //   response.data.payload;
+        const { about_me, id, nickname, password, user_id } =
+          response.data.payload.user;
         console.log(response.data.payload);
         setNickname(nickname);
         setAboutme(about_me);

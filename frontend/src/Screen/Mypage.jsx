@@ -102,10 +102,12 @@ const Mypage = () => {
     }
 
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/mypage`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/mypage`, {
+        withCredentials: true,
+      })
       .then((response) => {
-        //   const { about_me, id, nickname, password, user_id } =
-        //     response.data.payload;
+        const { about_me, id, nickname, password, user_id } =
+          response.data.payload.user;
         console.log(response.data.payload);
         setNickname(nickname);
         //   setAboutme(aboutme);
@@ -124,7 +126,7 @@ const Mypage = () => {
       <Nickname_container>
         Nickname
         <Line></Line>
-        <Nickname defaultValue={nickname}></Nickname>
+        <Nickname>{nickname}</Nickname>
       </Nickname_container>
       <Aboutme_container>
         About me
