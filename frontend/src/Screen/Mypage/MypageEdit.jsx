@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-import store from "../store";
+import store from "../../store";
 
 const EditMypage_container = styled.div`
   display: flex;
@@ -148,79 +148,11 @@ const Line = styled.div`
   width: 12vw;
 `;
 
-const Menu_area = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding-right: 200px;
-`;
-
 const Page_area = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding-left: 50px;
-`;
-
-const Menu_container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 300px;
-  width: 150px;
-  background-color: black;
-  align-items: center;
-  //justify-content: center;
-`;
-
-const Information_btn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-`;
-
-const Postings_btn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-`;
-
-const Change_passwordbtn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-`;
-
-const Edit_profilebtn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
 `;
 
 const MypageEdit = (props) => {
@@ -249,15 +181,9 @@ const MypageEdit = (props) => {
   }, []);
 
   return (
-    <EditMypage_container>
-      <Myprofile>Edit My Profile</Myprofile>
-      <Menu_area>
-        <Menu_container>
-          <Information_btn type="button">Profile</Information_btn>
-          <Postings_btn type="button">Postings</Postings_btn>
-          <Change_passwordbtn type="button">Change Password</Change_passwordbtn>
-          <Edit_profilebtn type="button">Edit My Profile</Edit_profilebtn>
-        </Menu_container>
+    <>
+      <EditMypage_container>
+        <Myprofile>Edit My Profile</Myprofile>
         <Page_area>
           <Nickname_container>
             Nickname
@@ -303,8 +229,8 @@ const MypageEdit = (props) => {
           </Genre_container>
           <Modify_btn>Modify</Modify_btn>
         </Page_area>
-      </Menu_area>
-    </EditMypage_container>
+      </EditMypage_container>
+    </>
   );
 };
 
