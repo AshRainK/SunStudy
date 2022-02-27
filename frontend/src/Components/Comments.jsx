@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import store from "../store";
@@ -109,10 +109,21 @@ const Comments = (props) => {
     commenter,
   } = props;
 
-  const [user, setUser] = useState(store.getState("user").user);
+  const [userData, setUserData] = useState(store.getState("user").user);
   const [isuser, setIsuser] = useState(true);
   const [isedit, setIsedit] = useState(true);
   const [contents, setContents] = useState(comment);
+
+  useEffect(()=>{
+    let user = store.getState("user");
+    if(user === null)
+    {
+      setUserData(null);
+    }
+    else{
+      setUserData(user.user);
+    }
+  },[]);
 
   const onChange = (e) => {
     e.preventDefault();
@@ -157,7 +168,7 @@ const Comments = (props) => {
             <>
               <Comment_content>{comment}</Comment_content>
               <Comment_date>{written_date}</Comment_date>
-              {commenter === user?.id ? (
+              {commenter === userData?.id ? (
                 <>
                  <Comment_func>
                  <Modify
