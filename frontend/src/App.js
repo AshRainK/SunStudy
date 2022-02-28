@@ -9,8 +9,7 @@ import Postdetail from "./Screen/Postdetail";
 import { HashRouter, Route } from "react-router-dom";
 import Sidebar from "./Components/Sidebar";
 import Genre from "./Screen/Genre";
-import Mypage from "./Screen/Mypage";
-import MypageEdit from "./Screen/MypageEdit";
+import Mypage from "./Screen/Mypage/Mypage";
 import axios from "axios";
 import store from "./store";
 import Search from "./Screen/Search";
@@ -84,9 +83,6 @@ function App() {
             </Route>
             <Route exact path="/mypage">
               <Mypage />
-            </Route>
-            <Route exact path="/mypageedit">
-              <MypageEdit />
             </Route>
             <Route exact path="/search/:keyword">
               <Search />
