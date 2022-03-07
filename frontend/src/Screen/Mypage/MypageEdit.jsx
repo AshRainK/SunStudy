@@ -8,10 +8,10 @@ import store from "../../store";
 const EditMypage_container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 100px 0;
-  width: 70vw;
+  padding: 100px;
+  width: 80vw;
+  height: 50vh;
   font-family: "Lato", sans-serif;
   font-weight: 1000;
   font-size: 24px;
@@ -152,7 +152,6 @@ const Page_area = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 50px;
 `;
 
 const MypageEdit = (props) => {
