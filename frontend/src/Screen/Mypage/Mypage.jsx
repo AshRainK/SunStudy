@@ -9,11 +9,10 @@ import MypageEdit from "./MypageEdit";
 const Mypage_container = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  padding: 100px 0;
-  width: 70vw;
-  height: 80vh;
+  padding: 100px;
+  width: 80vw;
+  height: 50vh;
   font-family: "Lato", sans-serif;
   font-weight: 1000;
   font-size: 24px;
@@ -21,11 +20,13 @@ const Mypage_container = styled.div`
 `;
 
 const Menu_area = styled.div`
-  width: 150px;
-  height: 200px;
+  // width: 150px;
+  // height: 200px;
+  // display: flex;
+  // flex-direction: row;
   display: flex;
-  flex-direction: row;
-  padding-right: 150px;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Menu_container = styled.div`
@@ -94,6 +95,7 @@ const Mypage = () => {
   const history = useHistory();
   const [nickname, setNickname] = useState("");
   const [about_me, setAboutme] = useState("");
+  const [genres, setGenres] = useState("");
   const [mode, setMode] = useState("myProfile");
 
   useEffect(() => {
@@ -106,11 +108,12 @@ const Mypage = () => {
         withCredentials: true,
       })
       .then((response) => {
-        const { about_me, id, nickname, password, user_id } =
+        const { about_me, id, nickname, password, user_id, genres } =
           response.data.payload.user;
         console.log(response.data.payload);
         setNickname(nickname);
         setAboutme(about_me);
+        setGenres(genres);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -147,7 +150,11 @@ const Mypage = () => {
       </Menu_area>
       <div>
         {mode === "myProfile" && (
-          <Basic nickname={nickname} about_me={about_me}></Basic>
+          <Basic
+            nickname={nickname}
+            about_me={about_me}
+            genres={genres}
+          ></Basic>
         )}
         {mode === "editProfile" && <MypageEdit></MypageEdit>}
       </div>

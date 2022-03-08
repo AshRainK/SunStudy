@@ -1,21 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import store from "../../store";
+import Mypage from "./Mypage";
 
 const Mypage_container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  padding: 100px 0;
-  width: 70vw;
-  height: 80vh;
-  font-family: "Lato", sans-serif;
-  font-weight: 1000;
-  font-size: 24px;
-  //background-color: yellow;
+  margin-left: 250px;
 `;
-
 const Myprofile = styled.div`
   display: flex;
   font-size: 36px;
@@ -72,102 +64,30 @@ const Genre = styled.div`
   display: flex;
 `;
 
-const Edit_btn = styled.button`
-  border: none;
-  color: white;
-  background-color: black;
-  margin-left: 10px;
-  cursor: pointer;
-  font-size: 25px;
-`;
-
 const Line = styled.div`
   border-bottom: 1px solid grey;
   width: 12vw;
 `;
 
-const Menu_page_container = styled.div`
-  display: flex;
-  padding-right: 200px;
-`;
-
-const Menu_area = styled.div`
-  width: 150px;
-  height: 200px;
-  display: flex;
-  flex-direction: row;
-  padding-right: 150px;
-`;
-
+// const Page_area = styled.div`
+//   width: 600px;
+//   display: flex;
+//   flex-direction: column;
+//   // width: 300px;
+// `;
 const Page_area = styled.div`
-  width: 600px;
-  display: flex;
   flex-direction: column;
-`;
-
-const Menu_container = styled.div`
   display: flex;
-  flex-direction: column;
-  height: 200px;
-  width: 150px;
-  background-color: black;
   align-items: center;
-  //justify-content: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+  // left: 50%
+  // top: 50%
+  padding: 5px;
 `;
 
-const Information_btn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-`;
-
-const Postings_btn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-`;
-
-const Change_passwordbtn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-`;
-
-const Edit_profilebtn = styled.div`
-  background-color: white;
-  width: 130px;
-  height: 30px;
-  font-size: 15px;
-  text-align: center;
-  //vertical-align: middle;
-  color: black;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-`;
-
-const Basic = ({ nickname, about_me }) => {
+const Basic = ({ nickname, about_me, genres }) => {
   return (
     <>
       <Mypage_container>
@@ -186,7 +106,7 @@ const Basic = ({ nickname, about_me }) => {
           <Genre_container>
             Prefer Genre
             <Line></Line>
-            <Genre>hiphop</Genre>
+            <Genre defaultValue={genres}></Genre>
           </Genre_container>
         </Page_area>
       </Mypage_container>
