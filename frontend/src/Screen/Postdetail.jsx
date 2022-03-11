@@ -256,7 +256,6 @@ const Postdetail = () => {
   const [date, setDate] = useState();
   const [nickname, setNickname] = useState();
   const [rating, setRate] = useState(undefined);
-  const [post_num, setPostNum] = useState();
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -265,6 +264,8 @@ const Postdetail = () => {
 
   const [isedit, setIsedit] = useState(true);
   const [isuser, setIsuser] = useState(true);
+
+  //const [yturl, setYTurl] = useState("");
 
   //게시글 수정 onchange
   const onChange = (e) => {
@@ -314,15 +315,17 @@ const Postdetail = () => {
       return window.alert("노래 정보를 입력해주세요");
     }
 
-    window.alert("해당 포스트를 수정하시겠습니까?");
+    window.confirm("해당 포스트를 수정하시겠습니까?");
     axios
     .patch(`${process.env.REACT_APP_SERVER_URL}/post/update`,
     { 
-      post_num,
+      post_num: params.post_num,
       title,
       artist,
       post_body: body,
-      genre
+      genre,
+      rating,
+      created_date: date,
     } ,{ withCredentials: true })
     .then((response)=>{
       setIsedit(true);
@@ -401,7 +404,17 @@ const Postdetail = () => {
       {isedit ? (
       <>
         <Music_container>
-        <Videocontainer></Videocontainer>
+        <Videocontainer>
+          <iframe
+            width="100%"
+            height= "100%"
+            //src=""
+            title = "YouTube video"
+            frameBorder= "0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          >
+          </iframe>
+        </Videocontainer>
         <Music_info>
           <Songtitle_text>{title}</Songtitle_text>
           <Singer_text>{artist}</Singer_text>
@@ -530,7 +543,6 @@ const Postdetail = () => {
               max={5}
               step={0.5}
               name="rating"
-              value={rating}
               placeholder=" */5.0"
             ></Music_rate>
           </Music_rate_area>
