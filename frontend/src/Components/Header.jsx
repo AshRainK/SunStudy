@@ -1,6 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useHistory, Link } from "react-router-dom";
+import store from "../store";
+import axios from "axios";
+import Search from "../Screen/Search";
 
 const Header_container = styled.div`
   display: flex;
@@ -18,18 +21,49 @@ const Search_login_container = styled.div`
   display: flex;
   margin-right: 30px;
 `;
+
+const Mypage_container = styled.div`
+  margin-right: 20px;
+  display: flex;
+`;
+
+const New_posting_container = styled.div`
+  margin-right: 20px;
+  display: flex;
+`;
+
 const Login_container = styled.div`
   margin-right: 20px;
   display: flex;
 `;
 
-const Login_textb = styled.button`
+const Login_btn = styled.button`
   font-size: 15px;
   color: white;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+`;
+
+const Logout_btn = styled.button`
+  font-size: 15px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+`;
+
+const Mypage_btn = styled.button`
+  font-size: 15px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
 `;
 
@@ -53,13 +87,13 @@ const Logo_title = styled.div`
   font-size: 25px;
   font-weight: 600;
   color: black;
-  font-family: 'Rock Salt', cursive;
+  font-family: "Rock Salt", cursive;
   line-height: 1.35em;
 `;
 
-const Search = styled.div`
+const Search_area = styled.div`
   display: flex;
-  margin-right: 70px;
+  margin-right: 10px;
 `;
 
 const Search_bar = styled.input`
@@ -86,30 +120,93 @@ const Search_btn = styled.button`
 
 const Header = ({ onSidebarToggleButtonClicked }) => {
   const history = useHistory();
+  const [keyword, setKeyword] = useState();
+  const [userData, setUserData] = useState(store.getState("user").user);
+
+  store.subscribe(() => {
+    let user = store.getState("user");
+    if (user === null) {
+      setUserData(null);
+    } else {
+      setUserData(store.getState("user").user);
+    }
+  });
+
+  const onChange = (e) => {
+    e.preventDefault();
+    setKeyword(e.target.value);
+    console.log(keyword);
+  };
 
   const onLoginbtnCliked = () => {
-    history.push('/login');
+    history.push("/login");
+  };
+
+  const onMypageCliked = () => {
+    history.push("/mypage");
+  };
+
+  const onNewpostingCliked = () => {
+    history.push("/postpage");
   };
 
   const onLogoCliked = () => {
-    history.push('/');
+    history.push("/");
+  };
+
+  const onLogoutbtnCliked = () => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        store.dispatch({ type: "LOGOUT" });
+        window.alert("로그아웃 되었습니다");
+      });
+  };
+
+  const onSearchbtnClicked = (e) => {
+    e.preventDefault();
+    history.push(`/search/${keyword}`);
   };
 
   return (
     <div>
       <Header_container>
         <Sidebar_button_toggle>
-          <i style={{ color: 'white', cursor: 'pointer' }} class="fas fa-bars" onClick={onSidebarToggleButtonClicked}></i>
+          <i
+            style={{ color: "white", cursor: "pointer" }}
+            class="fas fa-bars"
+            onClick={onSidebarToggleButtonClicked}
+          ></i>
         </Sidebar_button_toggle>
         <Search_login_container>
-          <Search>
-            <Search_bar type="text" placeholder="Search" />
-            <Search_btn type="submit">
+          <Search_area>
+            <Search_bar onChange={onChange} type="text" placeholder="Search" />
+            <Search_btn onClick={onSearchbtnClicked} type="submit">
               <i class="fas fa-search"></i>
             </Search_btn>
-          </Search>
+          </Search_area>
+          <Mypage_container>
+            {userData === null ? (
+              <></>
+            ) : (
+              <Logout_btn onClick={onMypageCliked}>My Page</Logout_btn>
+            )}
+          </Mypage_container>
+          <New_posting_container>
+            {userData === null ? (
+              <></>
+            ) : (
+              <Logout_btn onClick={onNewpostingCliked}>New Posting</Logout_btn>
+            )}
+          </New_posting_container>
           <Login_container>
-            <Login_textb onClick={onLoginbtnCliked}>Login</Login_textb>
+            {userData === null ? (
+              <Login_btn onClick={onLoginbtnCliked}>Login</Login_btn>
+            ) : (
+              <Logout_btn onClick={onLogoutbtnCliked}>Logout</Logout_btn>
+            )}
           </Login_container>
         </Search_login_container>
       </Header_container>

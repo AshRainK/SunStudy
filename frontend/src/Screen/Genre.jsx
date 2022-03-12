@@ -20,7 +20,7 @@ const Genre = () => {
   const [postings, setPostings] = useState([]);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/search/genres/${params.genre}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/search/?genre=${params.genre}`)
       .then((response) => {
         setPostings(response.data.payload);
       });

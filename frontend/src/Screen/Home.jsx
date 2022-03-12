@@ -22,6 +22,7 @@ const Home = () => {
       setPostings(response.data.payload);
     });
   }, [params.post_num]);
+
   return (
     <Body>
       {postings.map((posting, index) => {
