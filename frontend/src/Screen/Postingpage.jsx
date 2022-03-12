@@ -146,26 +146,29 @@ const Postingpage = () => {
     switch (e.target.name) {
       case "title":
         setTitle(e.target.value);
-
         break;
+
       case "artist":
         setArtist(e.target.value);
-
         break;
+
       case "overview":
         setOverview(e.target.value);
-
         break;
+
       case "genre":
         setGenre(e.target.value);
-
         break;
+
       case "rating":
         var value = e.target.value;
         if (value > 5) value = 5;
         else if (value < 0) value = 1;
         setRate(value);
-
+        break;
+      
+      case "yturl":
+        setYTurl(e.target.value);
         break;
     }
   };
@@ -192,7 +195,7 @@ const Postingpage = () => {
     axios
       .post(
         `${process.env.REACT_APP_SERVER_URL}/post/create`,
-        { title, genre, artist, rating, post_body: overview },
+        { title, genre, artist, rating, post_body: overview, url: yturl },
         { withCredentials: true }
       )
       .then((response) => {
@@ -309,9 +312,9 @@ const Postingpage = () => {
         <Youtube_url 
           onChange={onChange}
           type="text"
-          name="rating"
+          name="yturl"
           placeholder="Put the Youtube video url here ;)"
-          //value={yturl}
+          value={yturl}
         ></Youtube_url>
         <Submit_btn onClick={onSubmitPosting}>Submit</Submit_btn>
       </Posting_page_form>

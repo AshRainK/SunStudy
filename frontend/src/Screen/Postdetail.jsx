@@ -27,7 +27,7 @@ const Videocontainer = styled.div`
   width: 640px;
   height: 360px;
   margin: 30px 0 20px 0;
-  border: 1px solid lightgrey;
+  border: none;
 `;
 
 const Music_info = styled.div`
@@ -144,19 +144,18 @@ const Comment_submit_btn = styled.button`
 const Posting_page = styled.div`
   background-color: #f5f5f5;
   width: 700px;
-  height: 600px;
+  height: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
-  margin: 20px;
+  margin: 30px;
 `;
 
 const Posting_page_title = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  font-weight: 600;
+  margin: 80px 0 60px 0;
+  font-weight: 1000;
   font-size: 30px;
   font-family: "Noto Sans KR";
 `;
@@ -164,17 +163,24 @@ const Posting_page_title = styled.div`
 const Posting_page_form = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+`;
+
+const Title = styled.div`
+  font-size: 20px;
+  font-weight: 1000;
 `;
 
 const Music_title = styled.input`
-  margin-top: 30px;
-  width: 650px;
+  margin-top: 15px;
+  width: 600px;
   height: 40px;
   font-size: 20px;
+  justify-content: center;
 `;
+
 const Genre_field = styled.div`
-  margin-top: 20px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -186,11 +192,11 @@ const Genre_title = styled.div`
 
 const Checkbox_container = styled.div`
   display: flex;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 
 const Music_genre = styled.input`
-  width: 20px;
+  width: 22px;
   height: 20px;
   display: flex;
   flex-direction: row;
@@ -198,16 +204,17 @@ const Music_genre = styled.input`
 `;
 const Music_and_rates_area = styled.div`
   display: flex;
-  margin-top: 10px;
-  justify-content: space-around;
+  margin-top: 40px;
+  justify-content: space-between;
+  width: 580px;
 `;
 const Music_artist_area = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
 `;
 const Music_artist_title = styled.div`
   width: 50px;
+  margin-bottom: 5px;
 `;
 const Music_artist = styled.input`
   width: 250px;
@@ -223,10 +230,16 @@ const Music_rate = styled.input`
   width: 250px;
   height: 35px;
   font-size: 20px;
+  margin-top: 5px;
+`;
+
+const Music_review_e= styled.div`
+  margin: 40px 0 10px 0;
+  font-size: 20px;
+  font-weight: 1000;
 `;
 const Music_text = styled.textarea`
-  margin-top: 50px;
-  width: 650px;
+  width: 600px;
   height: 150px;
   font-size: 20px;
   font-family: "Noto Sans KR";
@@ -243,6 +256,12 @@ const Submit_btn = styled.button`
   &:active {
     border: 1px solid grey;
   }
+`;
+
+const Youtube_url = styled.input`
+  width: 600px;
+  height: 40px;
+  font-size: 20px;
 `;
 
 const Postdetail = () => {
@@ -265,37 +284,41 @@ const Postdetail = () => {
   const [isedit, setIsedit] = useState(true);
   const [isuser, setIsuser] = useState(true);
 
-  //const [yturl, setYTurl] = useState("");
+  const [yturl, setYTurl] = useState("");
 
   //게시글 수정 onchange
   const onChange = (e) => {
     switch (e.target.name) {
       case "title":
         setTitle(e.target.value);
-
         break;
+
       case "artist":
         setArtist(e.target.value);
-
         break;
+
       case "body":
         setBody(e.target.value);
-
         break;
+
       case "genre":
         setGenre(e.target.value);
-
         break;
+
       case "rating":
         var value = e.target.value;
         if (value > 5) value = 5;
         else if (value < 0) value = 1;
         setRate(value);
+        break;
 
+      case "yturl":
+        setYTurl(e.target.value);
         break;
     }
   };
 
+  //포스트 수정
   const onSubmitPosting = (e) => {
     e.preventDefault();
     if (title === "") {
@@ -326,6 +349,7 @@ const Postdetail = () => {
       genre,
       rating,
       created_date: date,
+      url: yturl,
     } ,{ withCredentials: true })
     .then((response)=>{
       setIsedit(true);
@@ -345,7 +369,7 @@ const Postdetail = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
-        const { title, artist, post_body, genre, created_date, rating, nickname } =
+        const { title, artist, post_body, genre, created_date, rating, nickname, url: yturl } =
           response.data.payload;
         setTitle(title);
         setArtist(artist);
@@ -354,6 +378,7 @@ const Postdetail = () => {
         setDate(created_date);
         setRate(rating);
         setNickname(nickname);
+        setYTurl(yturl);
       });
 
     axios
@@ -408,7 +433,7 @@ const Postdetail = () => {
           <iframe
             width="100%"
             height= "100%"
-            //src=""
+            src={yturl+"?autoplay=1&mute=1"}
             title = "YouTube video"
             frameBorder= "0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -451,9 +476,10 @@ const Postdetail = () => {
       </>
       ) : (
       <>
-        <Posting_page>
+      <Posting_page>
       <Posting_page_title>Edit Post</Posting_page_title>
       <Posting_page_form>
+        <Title>Title</Title>
         <Music_title
           type="text"
           name="title"
@@ -526,35 +552,41 @@ const Postdetail = () => {
             <Music_artist_title>Artist</Music_artist_title>
             <Music_artist
               type="text"
-              value={artist}
               name="artist"
               placeholder=" Artist is..."
               onChange={onChange}
             ></Music_artist>
           </Music_artist_area>
-
           <Music_rate_area>
             <Music_rate_title>Rates</Music_rate_title>
             <Music_rate
               onChange={onChange}
-              value={rating}
               type="number"
               min={1}
               max={5}
               step={0.5}
               name="rating"
+              value={rating}
               placeholder=" */5.0"
             ></Music_rate>
           </Music_rate_area>
         </Music_and_rates_area>
+        <Music_review_e>Review</Music_review_e>
         <Music_text
           id="text"
-          name="body"
-          value={body}
+          name="overview"
           placeholder="This music is..."
           onChange={onChange}
           maxLength="500"
         ></Music_text>
+        <Music_review_e>Youtube url</Music_review_e>
+        <Youtube_url 
+          onChange={onChange}
+          type="text"
+          name="yturl"
+          placeholder="Put the Youtube video url here ;)"
+          value={yturl}
+        ></Youtube_url>
         <Submit_btn onClick={onSubmitPosting}>Submit</Submit_btn>
       </Posting_page_form>
     </Posting_page>
