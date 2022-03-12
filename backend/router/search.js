@@ -17,5 +17,5 @@ router.get('/',(req,res,next)=>{
         }
         res.status(200).send({code : 200, payload : result});
     });
-  
+});
 module.exports = router;
