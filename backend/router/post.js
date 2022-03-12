@@ -11,17 +11,17 @@ router.post("/create", (req, res, next) => {
         return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
     }
     */
-  const { title, artist, post_body, genre, rating} = req.body;
+  const { title, artist, post_body, genre, rating, url} = req.body;
   db.query(
-    `INSERT INTO post(title,artist,rating,post_body,created_date,id,genre) 
-    VALUES(?,?,?,?,NOW(),?,?);`,
-    [title, artist, rating, post_body, 201710939, genre],
+    `INSERT INTO post(title,artist,rating,url,post_body,created_date,id,genre) 
+    VALUES(?,?,?,?,?,NOW(),?,?);`,
+    [title, artist, rating, url, post_body, 201710939, genre],
     (err) => {
       if (err) {
         next(err);
       }
       db.query(
-        `SELECT post_num,artist,title,rating,post_body,created_date,updated_date,post.id as writer_id, genre, nickname FROM post LEFT JOIN user on post.id = user.id WHERE title = ? and post_body = ? ORDER BY created_date DESC;`,
+        `SELECT post_num,artist,title,rating,url,post_body,created_date,updated_date,post.id as writer_id, genre, nickname FROM post LEFT JOIN user on post.id = user.id WHERE title = ? and post_body = ? ORDER BY created_date DESC;`,
         [title, post_body],
         (err, results) => {
           if (err) {
@@ -36,7 +36,7 @@ router.post("/create", (req, res, next) => {
 
 //UPDATE
 router.patch("/update", (req, res, next) => {
-  const { post_num, artist, post_body, title, genre, rating} = req.body;
+  const { post_num, artist, post_body, title, genre, rating, url} = req.body;
   /*
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
@@ -48,14 +48,14 @@ router.patch("/update", (req, res, next) => {
     //payload : '다른 사람이 작성한 글이므로 수정 할 수 없습니다.'});
     //}else{
     db.query(
-      `UPDATE post SET title=?, artist=?, post_body=?, updated_date=NOW(), genre=?, rating=? WHERE post_num = ?;`,
-      [title, artist, post_body, genre, rating, post_num],
+      `UPDATE post SET title=?, artist=?, post_body=?, updated_date=NOW(), genre=?, rating=?, url=? WHERE post_num = ?;`,
+      [title, artist, post_body, genre, rating, url,post_num],
       (err) => {
         if (err) {
           next(err);
         }
         db.query(
-          `SELECT post_num,artist,rating,title,post_body,created_date,updated_date,post.id as writer_id, genre,nickname FROM post LEFT JOIN user on post.id = user.id WHERE post_num = ?;`,
+          `SELECT post_num,artist,rating,title,url,post_body,created_date,updated_date,post.id as writer_id, genre,nickname FROM post LEFT JOIN user on post.id = user.id WHERE post_num = ?;`,
           [post_num],
           (err, result) => {
             if (err) {
@@ -96,7 +96,7 @@ router.delete("/:post_num", (req, res, next) => {
 //READ
 router.get("/:post_num", (req, res, next) => {
   db.query(
-    `SELECT post_num,artist,title,rating,post_body,created_date,updated_date,id as writer_id,genre FROM post WHERE post_num = ?;`,
+    `SELECT post_num,artist,title,rating,url,post_body,created_date,updated_date,id as writer_id,genre FROM post WHERE post_num = ?;`,
     [req.params.post_num],
     (err, result) => {
       if (err) {
@@ -123,7 +123,7 @@ router.get("/:post_num", (req, res, next) => {
 router.get("/", (req, res, next) => {
   let count = req.query.count ? req.query.count : 20;
   db.query(
-    `SELECT post.post_num,artist,title,rating,post_body,created_date,post.updated_date,post.id as writer_id,post.genre,post.nickname,count(comment.post_num) as comment_count FROM (SELECT post.post_num,artist,rating,title,post_body,created_date,post.updated_date,post.id,post.genre,nickname FROM post LEFT  JOIN user on post.id = user.id) AS post LEFT JOIN comment on post.post_num = comment.post_num GROUP BY post_num ORDER BY post_num DESC LIMIT ${count}`,
+    `SELECT post.post_num,artist,title,rating,url,post_body,created_date,post.updated_date,post.id as writer_id,post.genre,post.nickname,count(comment.post_num) as comment_count FROM (SELECT post.post_num,artist,rating,title,url,post_body,created_date,post.updated_date,post.id,post.genre,nickname FROM post LEFT  JOIN user on post.id = user.id) AS post LEFT JOIN comment on post.post_num = comment.post_num GROUP BY post_num ORDER BY post_num DESC LIMIT ${count}`,
     (err, result) => {
       if (err) {
         next(err);
