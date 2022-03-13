@@ -20,10 +20,10 @@ const Mypage_container = styled.div`
 `;
 
 const Menu_area = styled.div`
-  // width: 150px;
-  // height: 200px;
-  // display: flex;
-  // flex-direction: row;
+  width: 150px;
+  height: 200px;
+  display: flex;
+  flex-direction: row;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -121,6 +121,7 @@ const Mypage = () => {
   const onMenuButtonClick = (e) => {
     if (e.target.id === "myProfile") {
       setMode("myProfile");
+      console.log(e.target.id);
     } else if (e.target.id === "editProfile") {
       setMode("editProfile");
     }
@@ -133,7 +134,7 @@ const Mypage = () => {
           <Information_btn
             id="myProfile"
             type="button"
-            onclick={onMenuButtonClick}
+            onClick={onMenuButtonClick}
           >
             Profile
           </Information_btn>
@@ -142,7 +143,7 @@ const Mypage = () => {
           <Edit_profilebtn
             id="editProfile"
             type="button"
-            onclick={onMenuButtonClick}
+            onClick={onMenuButtonClick}
           >
             Edit My Profile
           </Edit_profilebtn>

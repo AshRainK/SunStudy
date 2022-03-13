@@ -6,13 +6,13 @@ const Mypage_container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 250px;
+  margin-left: 250px;s
 `;
 const Myprofile = styled.div`
   display: flex;
   font-size: 36px;
   margin-bottom: 60px;
-  margin-top: 20px;
+  margin-top: 120px;
   background-color: black;
   color: white;
   padding: 5px;
