@@ -233,7 +233,7 @@ const Music_rate = styled.input`
   margin-top: 5px;
 `;
 
-const Music_review_e= styled.div`
+const Music_review_e = styled.div`
   margin: 40px 0 10px 0;
   font-size: 20px;
   font-weight: 1000;
@@ -340,20 +340,23 @@ const Postdetail = () => {
 
     window.confirm("해당 포스트를 수정하시겠습니까?");
     axios
-    .patch(`${process.env.REACT_APP_SERVER_URL}/post/update`,
-    { 
-      post_num: params.post_num,
-      title,
-      artist,
-      post_body: body,
-      genre,
-      rating,
-      created_date: date,
-      url: yturl,
-    } ,{ withCredentials: true })
-    .then((response)=>{
-      setIsedit(true);
-    });
+      .patch(
+        `${process.env.REACT_APP_SERVER_URL}/post/update`,
+        {
+          post_num: params.post_num,
+          title,
+          artist,
+          post_body: body,
+          genre,
+          rating,
+          created_date: date,
+          url: yturl,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        setIsedit(true);
+      });
   };
 
   useEffect(() => {
@@ -369,8 +372,16 @@ const Postdetail = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`)
       .then((response) => {
-        const { title, artist, post_body, genre, created_date, rating, nickname, url: yturl } =
-          response.data.payload;
+        const {
+          title,
+          artist,
+          post_body,
+          genre,
+          created_date,
+          rating,
+          nickname,
+          url: yturl,
+        } = response.data.payload;
         setTitle(title);
         setArtist(artist);
         setBody(post_body);
@@ -391,23 +402,22 @@ const Postdetail = () => {
   //포스트 삭제
   const onDeletepostClick = () => {
     const confirm = window.confirm("해당 포스트를 삭제하시겠습니까?");
-    if(confirm){
+    if (confirm) {
       axios
-      .delete(
-        `${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`,
-        { withCredentials: true }
-      )
-      .then((response) => {
-        console.log(response);
-        history.push("/");
-      });
+        .delete(`${process.env.REACT_APP_SERVER_URL}/post/${params.post_num}`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response);
+          history.push("/");
+        });
     }
   };
 
   //포스트 수정 버튼 클릭
   const onModifypostClick = () => {
     setIsedit(!isedit);
-  } 
+  };
 
   const onCreateCommentButtonClick = () => {
     axios
@@ -427,170 +437,184 @@ const Postdetail = () => {
   return (
     <Postdetail_container>
       {isedit ? (
-      <>
-        <Music_container>
-        <Videocontainer>
-          <iframe
-            width="100%"
-            height= "100%"
-            src={yturl+"?autoplay=1&mute=1"}
-            title = "YouTube video"
-            frameBorder= "0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          >
-          </iframe>
-        </Videocontainer>
-        <Music_info>
-          <Songtitle_text>{title}</Songtitle_text>
-          <Singer_text>{artist}</Singer_text>
-          <Genre_text>{genre}</Genre_text>
-          <Rating><Rating_star><i class="fas fa-star"></i></Rating_star>{rating} / 5</Rating>
-        </Music_info>
-      </Music_container>
-      <Music_review>
-        {body}
-        <Music_review_info>
-          <Music_review_date>{date}</Music_review_date>
-          <Music_review_user>{nickname}</Music_review_user>
-        </Music_review_info>
-        <Posting_func>
-          <Posting_modify onClick={onModifypostClick}>수정</Posting_modify>
-          <Posting_delete onClick={onDeletepostClick}>
-            삭제
-          </Posting_delete>
-        </Posting_func>
-      </Music_review>
-      <Comment_wContainer>
-        <Commentbox
-          placeholder="WRITE COMMENT"
-          onChange={onChange}
-          value={comment}
-        ></Commentbox>
-        <Comment_submit_btn type="submit" onClick={onCreateCommentButtonClick}>
-          등록
-        </Comment_submit_btn>
-      </Comment_wContainer>
-      {comments.map((comment, index) => {
-        return <Comments {...comment} setComments={setComments} />;
-      })}
-      </>
+        <>
+          <Music_container>
+            <Videocontainer>
+              <iframe
+                width="100%"
+                height="100%"
+                src={
+                  yturl.includes("v=")
+                    ? "https://www.youtube.com/embed/" +
+                      yturl.split("v=").pop() +
+                      "?autoplay=1&mute=1"
+                    : "https://www.youtube.com/embed/" +
+                      yturl.split("/").pop() +
+                      "?autoplay=1&mute=1"
+                }
+                title="YouTube video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              ></iframe>
+            </Videocontainer>
+            <Music_info>
+              <Songtitle_text>{title}</Songtitle_text>
+              <Singer_text>{artist}</Singer_text>
+              <Genre_text>{genre}</Genre_text>
+              <Rating>
+                <Rating_star>
+                  <i class="fas fa-star"></i>
+                </Rating_star>
+                {rating} / 5
+              </Rating>
+            </Music_info>
+          </Music_container>
+          <Music_review>
+            {body}
+            <Music_review_info>
+              <Music_review_date>{date}</Music_review_date>
+              <Music_review_user>{nickname}</Music_review_user>
+            </Music_review_info>
+            <Posting_func>
+              <Posting_modify onClick={onModifypostClick}>수정</Posting_modify>
+              <Posting_delete onClick={onDeletepostClick}>삭제</Posting_delete>
+            </Posting_func>
+          </Music_review>
+          <Comment_wContainer>
+            <Commentbox
+              placeholder="WRITE COMMENT"
+              onChange={onChange}
+              value={comment}
+            ></Commentbox>
+            <Comment_submit_btn
+              type="submit"
+              onClick={onCreateCommentButtonClick}
+            >
+              등록
+            </Comment_submit_btn>
+          </Comment_wContainer>
+          {comments.map((comment, index) => {
+            return <Comments {...comment} setComments={setComments} />;
+          })}
+        </>
       ) : (
-      <>
-      <Posting_page>
-      <Posting_page_title>Edit Post</Posting_page_title>
-      <Posting_page_form>
-        <Title>Title</Title>
-        <Music_title
-          type="text"
-          name="title"
-          placeholder="Title is..."
-          onChange={onChange}
-          value={title}
-        ></Music_title>
-        <Genre_field>
-          <Genre_title>Genres</Genre_title>
-          <Checkbox_container>
-            <Music_genre
-              onChange={onChange}
-              type="radio"
-              id="cb1"
-              value="POP"
-              name="genre"
-            />
-            Pop
-            <Music_genre
-              onChange={onChange}
-              type="radio"
-              id="cb2"
-              value="KPOP"
-              name="genre"
-            />
-            K-Pop
-            <Music_genre
-              onChange={onChange}
-              type="radio"
-              id="cb3"
-              value="ROCK"
-              name="genre"
-            />
-            Rock
-            <Music_genre
-              onChange={onChange}
-              type="radio"
-              id="cb4"
-              value="JAZZ"
-              name="genre"
-            />
-            Jazz
-            <Music_genre
-              onChange={onChange}
-              type="radio"
-              id="cb5"
-              value="HIP-HOP"
-              name="genre"
-            />
-            Hiphop
-            <Music_genre
-              onChange={onChange}
-              type="radio"
-              id="cb6"
-              value="DISCO"
-              name="genre"
-            />
-            Disco
-            <Music_genre
-              type="radio"
-              id="cb7"
-              value="ELECTRONIC"
-              name="genre"
-            />
-            Electronic Music
-          </Checkbox_container>
-        </Genre_field>
-        <Music_and_rates_area>
-          <Music_artist_area>
-            <Music_artist_title>Artist</Music_artist_title>
-            <Music_artist
-              type="text"
-              name="artist"
-              placeholder=" Artist is..."
-              onChange={onChange}
-            ></Music_artist>
-          </Music_artist_area>
-          <Music_rate_area>
-            <Music_rate_title>Rates</Music_rate_title>
-            <Music_rate
-              onChange={onChange}
-              type="number"
-              min={1}
-              max={5}
-              step={0.5}
-              name="rating"
-              value={rating}
-              placeholder=" */5.0"
-            ></Music_rate>
-          </Music_rate_area>
-        </Music_and_rates_area>
-        <Music_review_e>Review</Music_review_e>
-        <Music_text
-          id="text"
-          name="overview"
-          placeholder="This music is..."
-          onChange={onChange}
-          maxLength="500"
-        ></Music_text>
-        <Music_review_e>Youtube url</Music_review_e>
-        <Youtube_url 
-          onChange={onChange}
-          type="text"
-          name="yturl"
-          placeholder="Put the Youtube video url here ;)"
-          value={yturl}
-        ></Youtube_url>
-        <Submit_btn onClick={onSubmitPosting}>Submit</Submit_btn>
-      </Posting_page_form>
-    </Posting_page>
-      </>)}
+        <>
+          <Posting_page>
+            <Posting_page_title>Edit Post</Posting_page_title>
+            <Posting_page_form>
+              <Title>Title</Title>
+              <Music_title
+                type="text"
+                name="title"
+                placeholder="Title is..."
+                onChange={onChange}
+                value={title}
+              ></Music_title>
+              <Genre_field>
+                <Genre_title>Genres</Genre_title>
+                <Checkbox_container>
+                  <Music_genre
+                    onChange={onChange}
+                    type="radio"
+                    id="cb1"
+                    value="POP"
+                    name="genre"
+                  />
+                  Pop
+                  <Music_genre
+                    onChange={onChange}
+                    type="radio"
+                    id="cb2"
+                    value="KPOP"
+                    name="genre"
+                  />
+                  K-Pop
+                  <Music_genre
+                    onChange={onChange}
+                    type="radio"
+                    id="cb3"
+                    value="ROCK"
+                    name="genre"
+                  />
+                  Rock
+                  <Music_genre
+                    onChange={onChange}
+                    type="radio"
+                    id="cb4"
+                    value="JAZZ"
+                    name="genre"
+                  />
+                  Jazz
+                  <Music_genre
+                    onChange={onChange}
+                    type="radio"
+                    id="cb5"
+                    value="HIP-HOP"
+                    name="genre"
+                  />
+                  Hiphop
+                  <Music_genre
+                    onChange={onChange}
+                    type="radio"
+                    id="cb6"
+                    value="DISCO"
+                    name="genre"
+                  />
+                  Disco
+                  <Music_genre
+                    type="radio"
+                    id="cb7"
+                    value="ELECTRONIC"
+                    name="genre"
+                  />
+                  Electronic Music
+                </Checkbox_container>
+              </Genre_field>
+              <Music_and_rates_area>
+                <Music_artist_area>
+                  <Music_artist_title>Artist</Music_artist_title>
+                  <Music_artist
+                    type="text"
+                    name="artist"
+                    placeholder=" Artist is..."
+                    onChange={onChange}
+                  ></Music_artist>
+                </Music_artist_area>
+                <Music_rate_area>
+                  <Music_rate_title>Rates</Music_rate_title>
+                  <Music_rate
+                    onChange={onChange}
+                    type="number"
+                    min={1}
+                    max={5}
+                    step={0.5}
+                    name="rating"
+                    value={rating}
+                    placeholder=" */5.0"
+                  ></Music_rate>
+                </Music_rate_area>
+              </Music_and_rates_area>
+              <Music_review_e>Review</Music_review_e>
+              <Music_text
+                id="text"
+                name="overview"
+                placeholder="This music is..."
+                onChange={onChange}
+                maxLength="500"
+              ></Music_text>
+              <Music_review_e>Youtube url</Music_review_e>
+              <Youtube_url
+                onChange={onChange}
+                type="text"
+                name="yturl"
+                placeholder="Put the Youtube video url here ;)"
+                value={yturl}
+              ></Youtube_url>
+              <Submit_btn onClick={onSubmitPosting}>Submit</Submit_btn>
+            </Posting_page_form>
+          </Posting_page>
+        </>
+      )}
     </Postdetail_container>
   );
 };
