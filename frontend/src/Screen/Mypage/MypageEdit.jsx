@@ -9,8 +9,7 @@ const EditMypage_container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px;
-  width: 80vw;
+  width: 58vw;
   height: 50vh;
   font-family: "Lato", sans-serif;
   font-weight: 1000;
