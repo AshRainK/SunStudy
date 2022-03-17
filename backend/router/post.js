@@ -39,7 +39,10 @@ router.post("/create", (req, res, next) => {
 router.patch("/update", (req, res, next) => {
   const { post_num, artist, post_body, title, genre, rating, url} = req.body;
   let updated_url;
-  if(url.split('/')[3] === "embed")
+  if(url === ""){
+    updated_url = url;
+  }
+  else if(url.split('/')[3] === "embed")
   {
       updated_url = url;
   }
