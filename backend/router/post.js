@@ -12,10 +12,11 @@ router.post("/create", (req, res, next) => {
     }
     */
   const { title, artist, post_body, genre, rating, url} = req.body;
+  const insert_url = "https://www.youtube.com/embed/"+url.split('/')[3];
   db.query(
     `INSERT INTO post(title,artist,rating,url,post_body,created_date,id,genre) 
     VALUES(?,?,?,?,?,NOW(),?,?);`,
-    [title, artist, rating, url, post_body, 201710939, genre],
+    [title, artist, rating, insert_url, post_body, 201710939, genre],
     (err) => {
       if (err) {
         next(err);
@@ -37,6 +38,15 @@ router.post("/create", (req, res, next) => {
 //UPDATE
 router.patch("/update", (req, res, next) => {
   const { post_num, artist, post_body, title, genre, rating, url} = req.body;
+  let updated_url;
+  if(url.split('/')[3] === "embed")
+  {
+      updated_url = url;
+  }
+  else
+  {
+      updated_url = "https://www.youtube.com/embed/"+url.split('/')[3];
+  }
   /*
     if(!util.IsOwner(req,res)){
         return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
@@ -49,7 +59,7 @@ router.patch("/update", (req, res, next) => {
     //}else{
     db.query(
       `UPDATE post SET title=?, artist=?, post_body=?, updated_date=NOW(), genre=?, rating=?, url=? WHERE post_num = ?;`,
-      [title, artist, post_body, genre, rating, url,post_num],
+      [title, artist, post_body, genre, rating, updated_url, post_num],
       (err) => {
         if (err) {
           next(err);
