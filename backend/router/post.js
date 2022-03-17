@@ -12,7 +12,13 @@ router.post("/create", (req, res, next) => {
     }
     */
   const { title, artist, post_body, genre, rating, url} = req.body;
-  const insert_url = "https://www.youtube.com/embed/"+url.split('/')[3];
+  let insert_url;
+  if(url === ""){
+    insert_url = url;
+  }
+  else{
+    insert_url = "https://www.youtube.com/embed/"+url.split('/')[3];
+  }
   db.query(
     `INSERT INTO post(title,artist,rating,url,post_body,created_date,id,genre) 
     VALUES(?,?,?,?,?,NOW(),?,?);`,
