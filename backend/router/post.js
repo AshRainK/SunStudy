@@ -6,23 +6,20 @@ const db = require("../lib/database");
 //Create
 router.post("/create", (req, res, next) => {
   // DB에 저장하고 쿼리문을 통해 결과물 전송
-  /*
-    if(!util.IsOwner(req,res)){
-        return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
-    }
-    */
-  const { title, artist, post_body, genre, rating, url} = req.body;
-  let insert_url;
-  if(url === ""){
-    insert_url = url;
+  if (!util.IsOwner(req, res)) {
+    return res.status(400).send({ code: 400, payload: "로그인이 필요합니다." });
   }
-  else{
-    insert_url = "https://www.youtube.com/embed/"+url.split('/')[3];
+  const { title, artist, post_body, genre, rating, url } = req.body;
+  let insert_url;
+  if (url === "") {
+    insert_url = url;
+  } else {
+    insert_url = "https://www.youtube.com/embed/" + url.split("/")[3];
   }
   db.query(
     `INSERT INTO post(title,artist,rating,url,post_body,created_date,id,genre) 
     VALUES(?,?,?,?,?,NOW(),?,?);`,
-    [title, artist, rating, insert_url, post_body, 201710939, genre],
+    [title, artist, rating, insert_url, post_body, req.user.id, genre],
     (err) => {
       if (err) {
         next(err);
@@ -43,72 +40,61 @@ router.post("/create", (req, res, next) => {
 
 //UPDATE
 router.patch("/update", (req, res, next) => {
-  const { post_num, artist, post_body, title, genre, rating, url} = req.body;
+  const { post_num, artist, post_body, title, genre, rating, url } = req.body;
   let updated_url;
-  if(url === ""){
+  if (url === "") {
     updated_url = url;
+  } else if (url.split("/")[3] === "embed") {
+    updated_url = url;
+  } else {
+    updated_url = "https://www.youtube.com/embed/" + url.split("/")[3];
   }
-  else if(url.split('/')[3] === "embed")
-  {
-      updated_url = url;
+  if (!util.IsOwner(req, res)) {
+    return res.status(400).send({ code: 400, payload: "로그인이 필요합니다." });
   }
-  else
-  {
-      updated_url = "https://www.youtube.com/embed/"+url.split('/')[3];
-  }
-  /*
-    if(!util.IsOwner(req,res)){
-        return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
-    }
-    */
   db.query(`SELECT * from post WHERE post_num = ?;`, [post_num], (err, results) => {
-    //if(results[0].id !== 201710939){
-    //return res.status(400).send({code : 400,
-    //payload : '다른 사람이 작성한 글이므로 수정 할 수 없습니다.'});
-    //}else{
-    db.query(
-      `UPDATE post SET title=?, artist=?, post_body=?, updated_date=NOW(), genre=?, rating=?, url=? WHERE post_num = ?;`,
-      [title, artist, post_body, genre, rating, updated_url, post_num],
-      (err) => {
-        if (err) {
-          next(err);
-        }
-        db.query(
-          `SELECT post_num,artist,rating,title,url,post_body,created_date,updated_date,post.id as writer_id, genre,nickname FROM post LEFT JOIN user on post.id = user.id WHERE post_num = ?;`,
-          [post_num],
-          (err, result) => {
-            if (err) {
-              next(err);
-            }
-            res.status(201).send({ code: 201, payload: result[0] });
+    if (results[0].id !== req.user.id) {
+      return res.status(400).send({ code: 400, payload: "다른 사람이 작성한 글이므로 수정 할 수 없습니다." });
+    } else {
+      db.query(
+        `UPDATE post SET title=?, artist=?, post_body=?, updated_date=NOW(), genre=?, rating=?, url=? WHERE post_num = ?;`,
+        [title, artist, post_body, genre, rating, updated_url, post_num],
+        (err) => {
+          if (err) {
+            next(err);
           }
-        );
-      }
-    );
-    //}
+          db.query(
+            `SELECT post_num,artist,rating,title,url,post_body,created_date,updated_date,post.id as writer_id, genre,nickname FROM post LEFT JOIN user on post.id = user.id WHERE post_num = ?;`,
+            [post_num],
+            (err, result) => {
+              if (err) {
+                next(err);
+              }
+              res.status(201).send({ code: 201, payload: result[0] });
+            }
+          );
+        }
+      );
+    }
   });
 });
 
 //DELETE
 router.delete("/:post_num", (req, res, next) => {
-  /*
-    if(!util.IsOwner(req,res)){
-        return res.status(400).send({code : 400, payload : '로그인이 필요합니다.'});
-    }
-    */
+  if (!util.IsOwner(req, res)) {
+    return res.status(400).send({ code: 400, payload: "로그인이 필요합니다." });
+  }
   db.query(`SELECT * FROM post WHERE post_num = ?;`, [req.params.post_num], (err, results) => {
-    /*
-        if(results[0].id !== 201710939){
-            return res.status(400).send({code : 400, 
-                payload : '다른 사람이 작성한 글이므로 삭제 할 수 없습니다.'});
-        }else*/ //{
-    db.query(`DELETE FROM post WHERE post_num = ?;`, [req.params.post_num], (err) => {
-      if (err) {
-        next(err);
-      }
-      res.status(200).send({ code: 200, payload: "삭제가 완료 되었습니다." });
-    });
-    //}
+    if (results[0].id !== req.user.id) {
+      return res.status(400).send({ code: 400, payload: "다른 사람이 작성한 글이므로 삭제 할 수 없습니다." });
+    } else {
+      db.query(`DELETE FROM post WHERE post_num = ?;`, [req.params.post_num], (err) => {
+        if (err) {
+          next(err);
+        }
+        res.status(200).send({ code: 200, payload: "삭제가 완료 되었습니다." });
+      });
+    }
   });
 });
 
@@ -131,7 +117,7 @@ router.get("/:post_num", (req, res, next) => {
           if (err) {
             next(err);
           }
-          res.status(200).send({ code: 200, payload: {...result[0], nickname : user_result[0].nickname}});
+          res.status(200).send({ code: 200, payload: { ...result[0], nickname: user_result[0].nickname } });
         }
       );
     }
