@@ -10,16 +10,11 @@ router.post("/create", (req, res, next) => {
     return res.status(400).send({ code: 400, payload: "로그인이 필요합니다." });
   }
   const { title, artist, post_body, genre, rating, url } = req.body;
-  let insert_url;
-  if (url === "") {
-    insert_url = url;
-  } else {
-    insert_url = "https://www.youtube.com/embed/" + url.split("/")[3];
-  }
+
   db.query(
     `INSERT INTO post(title,artist,rating,url,post_body,created_date,id,genre) 
     VALUES(?,?,?,?,?,NOW(),?,?);`,
-    [title, artist, rating, insert_url, post_body, req.user.id, genre],
+    [title, artist, rating, url, post_body, req.user.id, genre],
     (err) => {
       if (err) {
         next(err);
