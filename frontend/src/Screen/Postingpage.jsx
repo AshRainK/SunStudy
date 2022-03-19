@@ -135,6 +135,7 @@ const Postingpage = () => {
   const [overview, setOverview] = useState("");
   const history = useHistory();
   const [yturl, setYTurl] = useState("");
+  const [writer_id, setWriterId] = useState();
 
   useEffect(() => {
     if (store.getState("user").user === null) {
@@ -195,7 +196,7 @@ const Postingpage = () => {
     axios
       .post(
         `${process.env.REACT_APP_SERVER_URL}/post/create`,
-        { title, genre, artist, rating, post_body: overview, url: yturl },
+        { title, genre, artist, rating, post_body: overview, url: yturl, writer_id },
         { withCredentials: true }
       )
       .then((response) => {
@@ -267,6 +268,7 @@ const Postingpage = () => {
             />
             Disco
             <Music_genre
+              onChange={onChange}
               type="radio"
               id="cb7"
               value="ELECTRONIC"
