@@ -20,7 +20,7 @@ const EditMypage_container = styled.div`
 const Myprofile = styled.div`
   display: flex;
   font-size: 36px;
-  margin-bottom: 60px;
+  //margin-bottom: 60px;
   margin-top: 20px;
   background-color: black;
   color: white;
@@ -32,6 +32,7 @@ const Nickname_container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 60px;
   //background-color: green;
 `;
 
@@ -49,37 +50,6 @@ const Nickname = styled.input`
 `;
 
 const NicknameC_btn = styled.button`
-  border: none;
-  color: white;
-  background-color: black;
-  cursor: pointer;
-  font-size: 18px;
-  margin: 10px;
-`;
-
-const Password_container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  //background-color: green;
-`;
-
-const Password = styled.input`
-  margin-top: 10px;
-  height: 15px;
-  padding: 10px;
-  font-size: 15px;
-  font-weight: 800;
-  resize: none;
-  font-family: "Lato", sans-serif;
-  &:focus {
-    outline: none;
-  }
-`;
-
-const PasswordC_btn = styled.button`
   border: none;
   color: white;
   background-color: black;
@@ -134,12 +104,15 @@ const Checkbox = styled.div`
 `;
 
 const Modify_btn = styled.button`
+  display: flex;
+  justify-content: center;
   border: none;
   color: white;
   background-color: black;
   cursor: pointer;
   font-size: 18px;
   margin: 10px;
+  width: 80px;
 `;
 
 const Line = styled.div`
@@ -151,6 +124,8 @@ const Page_area = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  justify-content: center;
+  align-items: center;
 `;
 
 const MypageEdit = (props) => {
@@ -158,7 +133,13 @@ const MypageEdit = (props) => {
   const params = useParams();
   const [nickname, setNickname] = useState("");
   const [about_me, setAboutme] = useState("");
+  const [genres, setGenres] = useState("");
   const [id, setID] = useState("");
+
+  const onChange = (e) => {
+    e.preventDefault();
+    setAboutme(e.target.value);
+  };
 
   useEffect(() => {
     if (store.getState("user").user === null) {
@@ -178,6 +159,31 @@ const MypageEdit = (props) => {
       .catch((err) => console.error(err));
   }, []);
 
+  const onSubmitEditBtn = () => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_SERVER_URL}/mypage/aboutme`,
+        { about_me },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response);
+        setAboutme(response.data.payload);
+        window.alert("회원 정보가 변경되었습니다.");
+      });
+  };
+
+  // const onSubmitNicknameCheck = () => {
+  //   if (nickname === "") {
+  //     return window.alert("닉네임을 입력해주세요");
+  //   }
+  // };
+  // axios
+  // .post (
+
+  // )
+  //수정할 때 이미 있는 닉네임을 수정해야하는데 patch와 get을 어떻게 적절히 사용?
+
   return (
     <>
       <EditMypage_container>
@@ -189,16 +195,14 @@ const MypageEdit = (props) => {
             <Nickname defaultValue={nickname}></Nickname>
             <NicknameC_btn>confirm</NicknameC_btn>
           </Nickname_container>
-          <Password_container>
-            Change Password
-            <Line></Line>
-            <Password type="password"></Password>
-            <PasswordC_btn>confirm</PasswordC_btn>
-          </Password_container>
           <Aboutme_container>
             About me
             <Line></Line>
-            <Aboutme></Aboutme>
+            <Aboutme
+              type="text"
+              defaultvalue={about_me}
+              onChange={onChange}
+            ></Aboutme>
           </Aboutme_container>
           <Genre_container>
             Prefer Genre
@@ -225,7 +229,7 @@ const MypageEdit = (props) => {
               Electronic Music
             </Checkbox>
           </Genre_container>
-          <Modify_btn>Modify</Modify_btn>
+          <Modify_btn onClick={onSubmitEditBtn}>Modify</Modify_btn>
         </Page_area>
       </EditMypage_container>
     </>
