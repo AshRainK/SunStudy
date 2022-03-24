@@ -6,7 +6,8 @@ const Mypage_container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 250px;s
+  margin-left: 210px;
+  margin-top: 30px;
 `;
 const Myprofile = styled.div`
   display: flex;
@@ -69,12 +70,6 @@ const Line = styled.div`
   width: 12vw;
 `;
 
-// const Page_area = styled.div`
-//   width: 600px;
-//   display: flex;
-//   flex-direction: column;
-//   // width: 300px;
-// `;
 const Page_area = styled.div`
   flex-direction: column;
   display: flex;
@@ -101,12 +96,12 @@ const Basic = ({ nickname, about_me, genres }) => {
           <Aboutme_container>
             About me
             <Line></Line>
-            <Aboutme defaultValue={about_me}></Aboutme>
+            <Aboutme>{about_me}</Aboutme>
           </Aboutme_container>
           <Genre_container>
             Prefer Genre
             <Line></Line>
-            <Genre defaultValue={genres}></Genre>
+            <Genre>{genres}</Genre>
           </Genre_container>
         </Page_area>
       </Mypage_container>

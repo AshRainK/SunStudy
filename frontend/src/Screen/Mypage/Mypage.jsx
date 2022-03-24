@@ -5,6 +5,8 @@ import axios from "axios";
 import store from "../../store";
 import Basic from "./Basic";
 import MypageEdit from "./MypageEdit";
+import UserPosting from "./UserPostings";
+import ChangePassword from "./ChangePassword";
 
 const Mypage_container = styled.div`
   display: flex;
@@ -108,8 +110,9 @@ const Mypage = () => {
         withCredentials: true,
       })
       .then((response) => {
-        const { about_me, id, nickname, password, user_id, genres } =
+        const { about_me, id, nickname, password, user_id } =
           response.data.payload.user;
+        const { genres } = response.data.payload.genre;
         console.log(response.data.payload);
         setNickname(nickname);
         setAboutme(about_me);
@@ -124,6 +127,10 @@ const Mypage = () => {
       console.log(e.target.id);
     } else if (e.target.id === "editProfile") {
       setMode("editProfile");
+    } else if (e.target.id === "postings") {
+      setMode("postings");
+    } else if (e.target.id === "changepwd") {
+      setMode("changepwd");
     }
   };
 
@@ -138,8 +145,16 @@ const Mypage = () => {
           >
             Profile
           </Information_btn>
-          <Postings_btn type="button">Postings</Postings_btn>
-          <Change_passwordbtn type="button">Change Password</Change_passwordbtn>
+          <Postings_btn type="button" id="postings" onClick={onMenuButtonClick}>
+            Postings
+          </Postings_btn>
+          <Change_passwordbtn
+            type="button"
+            id="changepwd"
+            onClick={onMenuButtonClick}
+          >
+            Change Password
+          </Change_passwordbtn>
           <Edit_profilebtn
             id="editProfile"
             type="button"
@@ -157,6 +172,8 @@ const Mypage = () => {
             genres={genres}
           ></Basic>
         )}
+        {mode === "postings" && <UserPosting></UserPosting>}
+        {mode === "changepwd" && <ChangePassword></ChangePassword>}
         {mode === "editProfile" && <MypageEdit></MypageEdit>}
       </div>
     </Mypage_container>
