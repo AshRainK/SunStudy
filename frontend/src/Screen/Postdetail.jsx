@@ -279,12 +279,13 @@ const Postdetail = () => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
 
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(store.getState("user").user);
 
-  const [isedit, setIsedit] = useState(true);
-  const [isuser, setIsuser] = useState(true);
+  const [isread, setIsread] = useState(true);
 
   const [yturl, setYTurl] = useState("");
+
+  const [writer_id, setWriterId] = useState();
 
   //게시글 수정 onchange
   const onChange = (e) => {
@@ -314,6 +315,10 @@ const Postdetail = () => {
 
       case "yturl":
         setYTurl(e.target.value);
+        break;
+
+      case "comment":
+        setComment(e.target.value);
         break;
     }
   };
@@ -351,11 +356,12 @@ const Postdetail = () => {
           rating,
           created_date: date,
           url: yturl,
+          writer_id,
         },
         { withCredentials: true }
       )
       .then((response) => {
-        setIsedit(true);
+        setIsread(true);
       });
   };
 
@@ -381,6 +387,7 @@ const Postdetail = () => {
           rating,
           nickname,
           url: yturl,
+          writer_id,
         } = response.data.payload;
         setTitle(title);
         setArtist(artist);
@@ -390,6 +397,7 @@ const Postdetail = () => {
         setRate(rating);
         setNickname(nickname);
         setYTurl(yturl);
+        setWriterId(writer_id);
       });
 
     axios
@@ -416,7 +424,7 @@ const Postdetail = () => {
 
   //포스트 수정 버튼 클릭
   const onModifypostClick = () => {
-    setIsedit(!isedit);
+    setIsread(!isread);
   };
 
   const onCreateCommentButtonClick = () => {
@@ -436,7 +444,7 @@ const Postdetail = () => {
 
   return (
     <Postdetail_container>
-      {isedit ? (
+      {isread ? (
         <>
           <Music_container>
             <Videocontainer>
@@ -475,16 +483,24 @@ const Postdetail = () => {
               <Music_review_date>{date}</Music_review_date>
               <Music_review_user>{nickname}</Music_review_user>
             </Music_review_info>
+            {writer_id === userData?.id  ? (
+            <>
             <Posting_func>
               <Posting_modify onClick={onModifypostClick}>수정</Posting_modify>
               <Posting_delete onClick={onDeletepostClick}>삭제</Posting_delete>
             </Posting_func>
+            </>
+            ):(
+            <>
+            </>)}
           </Music_review>
           <Comment_wContainer>
             <Commentbox
               placeholder="WRITE COMMENT"
-              onChange={onChange}
+              type= "text"
               value={comment}
+              name = "comment"
+              onChange={onChange}
             ></Commentbox>
             <Comment_submit_btn
               type="submit"
@@ -499,120 +515,130 @@ const Postdetail = () => {
         </>
       ) : (
         <>
-          <Posting_page>
-            <Posting_page_title>Edit Post</Posting_page_title>
-            <Posting_page_form>
-              <Title>Title</Title>
-              <Music_title
-                type="text"
-                name="title"
-                placeholder="Title is..."
-                onChange={onChange}
-                value={title}
-              ></Music_title>
-              <Genre_field>
-                <Genre_title>Genres</Genre_title>
-                <Checkbox_container>
-                  <Music_genre
-                    onChange={onChange}
-                    type="radio"
-                    id="cb1"
-                    value="POP"
-                    name="genre"
-                  />
-                  Pop
-                  <Music_genre
-                    onChange={onChange}
-                    type="radio"
-                    id="cb2"
-                    value="KPOP"
-                    name="genre"
-                  />
-                  K-Pop
-                  <Music_genre
-                    onChange={onChange}
-                    type="radio"
-                    id="cb3"
-                    value="ROCK"
-                    name="genre"
-                  />
-                  Rock
-                  <Music_genre
-                    onChange={onChange}
-                    type="radio"
-                    id="cb4"
-                    value="JAZZ"
-                    name="genre"
-                  />
-                  Jazz
-                  <Music_genre
-                    onChange={onChange}
-                    type="radio"
-                    id="cb5"
-                    value="HIP-HOP"
-                    name="genre"
-                  />
-                  Hiphop
-                  <Music_genre
-                    onChange={onChange}
-                    type="radio"
-                    id="cb6"
-                    value="DISCO"
-                    name="genre"
-                  />
-                  Disco
-                  <Music_genre
-                    type="radio"
-                    id="cb7"
-                    value="ELECTRONIC"
-                    name="genre"
-                  />
-                  Electronic Music
-                </Checkbox_container>
-              </Genre_field>
-              <Music_and_rates_area>
-                <Music_artist_area>
-                  <Music_artist_title>Artist</Music_artist_title>
-                  <Music_artist
-                    type="text"
-                    name="artist"
-                    placeholder=" Artist is..."
-                    onChange={onChange}
-                  ></Music_artist>
-                </Music_artist_area>
-                <Music_rate_area>
-                  <Music_rate_title>Rates</Music_rate_title>
-                  <Music_rate
-                    onChange={onChange}
-                    type="number"
-                    min={1}
-                    max={5}
-                    step={0.5}
-                    name="rating"
-                    value={rating}
-                    placeholder=" */5.0"
-                  ></Music_rate>
-                </Music_rate_area>
-              </Music_and_rates_area>
-              <Music_review_e>Review</Music_review_e>
-              <Music_text
-                id="text"
-                name="overview"
-                placeholder="This music is..."
-                onChange={onChange}
-                maxLength="500"
-              ></Music_text>
-              <Music_review_e>Youtube url</Music_review_e>
-              <Youtube_url
-                onChange={onChange}
-                type="text"
-                name="yturl"
-                placeholder="Put the Youtube video url here ;)"
-                value={yturl}
-              ></Youtube_url>
-              <Submit_btn onClick={onSubmitPosting}>Submit</Submit_btn>
-            </Posting_page_form>
-          </Posting_page>
+    <Posting_page>
+      <Posting_page_title>Edit Post</Posting_page_title>
+      <Posting_page_form>
+        <Title>Title</Title>
+        <Music_title
+          type="text"
+          name="title"
+          placeholder="Title is..."
+          onChange={onChange}
+          value={title}
+        ></Music_title>
+        <Genre_field>
+          <Genre_title>Genres</Genre_title>
+          <Checkbox_container>
+            <Music_genre
+              onChange={onChange}
+              type="radio"
+              id="cb1"
+              value="POP"
+              name="genre"
+              checked= {`${genre}`=== "POP"}
+            />
+            Pop
+            <Music_genre
+              onChange={onChange}
+              type="radio"
+              id="cb2"
+              value="KPOP"
+              name="genre"
+              checked= {`${genre}`=== "KPOP"}
+            />
+            K-Pop
+            <Music_genre
+              onChange={onChange}
+              type="radio"
+              id="cb3"
+              value="ROCK"
+              name="genre"
+              checked= {`${genre}`=== "ROCK"}
+            />
+            Rock
+            <Music_genre
+              onChange={onChange}
+              type="radio"
+              id="cb4"
+              value="JAZZ"
+              name="genre"
+              checked= {`${genre}`=== "JAZZ"}
+            />
+            Jazz
+            <Music_genre
+              onChange={onChange}
+              type="radio"
+              id="cb5"
+              value="HIP-HOP"
+              name="genre"
+              checked= {`${genre}`=== "HIP-HOP"}
+            />
+            Hiphop
+            <Music_genre
+              onChange={onChange}
+              type="radio"
+              id="cb6"
+              value="DISCO"
+              name="genre"
+              checked= {`${genre}`=== "DISCO"}
+            />
+            Disco
+            <Music_genre
+              onChange={onChange}
+              type="radio"
+              id="cb7"
+              value="ELECTRONIC"
+              name="genre"
+              checked= {`${genre}`=== "ELECTRONIC"}
+            />
+            Electronic Music
+          </Checkbox_container>
+        </Genre_field>
+        <Music_and_rates_area>
+          <Music_artist_area>
+            <Music_artist_title>Artist</Music_artist_title>
+            <Music_artist
+              type="text"
+              name="artist"
+              placeholder=" Artist is..."
+              onChange={onChange}
+              value={artist}
+            ></Music_artist>
+          </Music_artist_area>
+          <Music_rate_area>
+            <Music_rate_title>Rates</Music_rate_title>
+            <Music_rate
+              onChange={onChange}
+              type="number"
+              min={1}
+              max={5}
+              step={0.5}
+              name="rating"
+              value={rating}
+              placeholder=" */5.0"
+            ></Music_rate>
+          </Music_rate_area>
+        </Music_and_rates_area>
+        <Music_review_e>Review</Music_review_e>
+        <Music_text
+          id="text"
+          name="body"
+          value={body}
+          placeholder="This music is..."
+          onChange={onChange}
+          maxLength="500"
+        ></Music_text>
+        <Music_review_e>Youtube url</Music_review_e>
+        <Youtube_url
+          onChange={onChange}
+          type="text"
+          name="yturl"
+          placeholder="Put the Youtube video url here ;)"
+          value={yturl}
+        ></Youtube_url>
+        <Submit_btn onClick={onSubmitPosting}>Submit</Submit_btn>
+      </Posting_page_form>
+      </Posting_page>
         </>
       )}
     </Postdetail_container>

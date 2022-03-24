@@ -78,7 +78,7 @@ const Postingcard = (props) => {
       <Title>{title}</Title>
       <Artist>{artist}</Artist>
       <User_and_posttime>
-        <User>USER1</User>
+        <User>{nickname}</User>
         <Posttime>1일전</Posttime>
       </User_and_posttime>
     </Content>
