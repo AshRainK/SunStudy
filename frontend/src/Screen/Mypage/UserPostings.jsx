@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-import store from "../../store";
+import Postingcard from "../../Components/Postingcard";
 
 const EditMypage_container = styled.div`
   display: flex;
@@ -31,39 +31,37 @@ const Page_area = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 50px;
-  width: 45vw;
+  align-content: center;
+  padding-left: 350px;
+  padding-top: 1000px;
+  margin-top: 500px;
+  //width: 45vw;
+  flex-wrap: wrap;
+  //justify-content: space-around;
+  //align-content:center;
 `;
 
 const UserPosting = (props) => {
   const history = useHistory();
   const params = useParams();
-  const [nickname, setNickname] = useState("");
-  const [about_me, setAboutme] = useState("");
-  const [id, setID] = useState("");
+  const [postings, setPostings] = useState([]);
 
   useEffect(() => {
-    if (store.getState("user").user === null) {
-      history.push({ pathname: "/" });
-    }
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/mypage`, {
-        withCredentials: true,
-      })
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/user`)
       .then((response) => {
-        const { about_me, id, nickname, password, user_id } =
-          response.data.payload.user;
-        console.log(response.data.payload);
-        setNickname(nickname);
-        setAboutme(about_me);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+        setPostings(response.data.payload);
+      });
+  }, [params.writer_id]);
 
   return (
     <EditMypage_container>
       <Myprofile>My Postings</Myprofile>
-      <Page_area></Page_area>
+      <Page_area>
+        {postings.map((posting, index) => {
+          return <Postingcard {...posting} />;
+        })}
+      </Page_area>
     </EditMypage_container>
   );
 };
